@@ -1,209 +1,309 @@
 /* ================================================================
-   RiPRO HP — Items grid + carousel modal
-   Data uses subitems[] so future picker work can append more
-   slides (image/label/desc/note) without changing this file.
+   RiPRO LP — App script (items-data.js駆動版)
    ================================================================ */
-(function(){
-  const items = window.RIPRO_ITEMS || [];
+(function() {
+  const ITEMS = (window.RIPRO_ITEMS || []).map(it => {
+    const firstSub = (it.subitems && it.subitems[0]) || {};
+    const priceStr = it.price || '';
+    const m = priceStr.match(/(\d+)/);
+    const priceNum = m ? parseInt(m[1], 10) : 0;
+    return {
+      id: it.id,
+      name: it.name,
+      price: priceNum,
+      priceLabel: priceStr,
+      category: it.category || 'other',
+      free: !!it.free,
+      desc: firstSub.desc || '',
+      note: firstSub.note || '',
+      phLabel: it.name,
+      image: firstSub.image || null,
+      subitems: it.subitems || []
+    };
+  });
 
-  const grid = document.getElementById('itemsGrid');
-  if(!grid) return;
-
-  let currentFilter = 'all';
-  let currentQuery = '';
-
-  // Split price into main number + unit (small suffix).
-  // e.g. "66円/kg" -> {main:"66", unit:"円/kg"}; "1t未満 無料" -> {main:"1t未満 無料", unit:""}
-  function splitPrice(price){
-    const m = price.match(/^([0-9０-９〜]+)\s*(.*)$/);
-    if(m && m[2]) return {main:m[1], unit:m[2]};
-    return {main:price, unit:''};
+  // ---------- Filter chips (dynamic) ----------
+  const chipsContainer = document.querySelector('.sec-service .chips');
+  function buildChips() {
+    if (!chipsContainer) return;
+    const cats = [];
+    ITEMS.forEach(it => {
+      if (it.category && !cats.includes(it.category)) cats.push(it.category);
+    });
+    const hasFree = ITEMS.some(it => it.free);
+    chipsContainer.innerHTML = '';
+    const mk = (filter, label, active) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip' + (active ? ' chip-active' : '');
+      b.dataset.filter = filter;
+      b.textContent = label;
+      return b;
+    };
+    chipsContainer.appendChild(mk('all', 'すべて', true));
+    cats.forEach(c => chipsContainer.appendChild(mk(c, c, false)));
+    if (hasFree) chipsContainer.appendChild(mk('free', '0円回収', false));
   }
+  buildChips();
 
-  function renderGrid(){
+  // ---------- Item grid rendering ----------
+  const grid = document.getElementById('itemsGrid');
+  function renderItems(filter, query) {
+    if (!grid) return;
+    filter = filter || 'all';
+    query = query || '';
     grid.innerHTML = '';
-    const q = currentQuery.trim().toLowerCase();
-    const visible = items.filter(it => {
-      if(currentFilter === 'free'){ if(!it.free) return false; }
-      else if(currentFilter !== 'all'){ if(it.category !== currentFilter) return false; }
-      if(q){
-        const hay = (it.name + ' ' + it.category + ' ' + it.subitems.map(s=>s.label+' '+s.desc).join(' ')).toLowerCase();
-        if(!hay.includes(q)) return false;
+    const q = query.trim().toLowerCase();
+    const visible = ITEMS.filter(it => {
+      if (filter === 'free') return it.free;
+      if (filter !== 'all' && it.category !== filter) return false;
+      if (q) {
+        const hay = (it.name + ' ' + it.desc + ' ' + it.category + ' ' + (it.subitems||[]).map(s=>s.label+s.desc).join(' ')).toLowerCase();
+        if (!hay.includes(q)) return false;
       }
       return true;
     });
-    if(visible.length === 0){
-      grid.innerHTML = '<div class="items-empty">該当する品目が見つかりません</div>';
+    if (visible.length === 0) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:#888;font-size:13px">該当する品目が見つかりません</div>';
       return;
     }
     visible.forEach(it => {
-      const idx = items.indexOf(it);
-      const sp = splitPrice(it.price);
-      const card = document.createElement('div');
-      card.className = 'item-c' + (it.free ? ' fr' : '');
+      const card = document.createElement('button');
+      card.className = 'item' + (it.free ? ' item-free' : '');
+      const imgHtml = it.image
+        ? '<img src="' + it.image + '" alt="' + it.name + '" style="width:100%;height:100%;object-fit:cover;" loading="lazy">'
+        : '<span class="ph-label">' + it.phLabel + '</span>';
       card.innerHTML =
-        '<span class="item-cat">' + it.category + '</span>' +
-        '<img class="item-img" src="' + it.subitems[0].image + '" alt="' + it.name + '">' +
-        '<div class="info">' +
-          '<p class="nm">' + it.name + '</p>' +
-          '<p class="pr">' + sp.main + (sp.unit ? '<small>' + sp.unit + '</small>' : '') + '</p>' +
-          '<p class="tap">タップで詳細 →</p>' +
+        '<div class="item-img">' + imgHtml + '</div>' +
+        '<div class="item-body">' +
+          '<div class="item-name">' + it.name + '</div>' +
+          '<div class="item-price">' + it.priceLabel + '</div>' +
+          '<div class="item-tap">タップで詳細 →</div>' +
         '</div>';
-      card.addEventListener('click', () => openModal(idx));
+      card.onclick = function() { openModal(it.id); };
       grid.appendChild(card);
     });
   }
+  renderItems();
 
-  // ---- filters: dynamically build chips from item categories ----
-  function buildFilterChips() {
-    const filtersEl = document.getElementById('itemsFilters');
-    if (!filtersEl) return;
-    // Collect unique categories in insertion order
-    const categories = [];
-    items.forEach(it => {
-      if (it.category && !categories.includes(it.category)) categories.push(it.category);
-    });
-    // Build: すべて + カテゴリ順 + 0円回収（free品目がある場合）
-    const hasFreeItems = items.some(it => it.free);
-    filtersEl.innerHTML = '';
-    const mk = (filter, label, active) => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'filter-chip' + (active ? ' active' : '');
-      btn.dataset.filter = filter;
-      btn.textContent = label;
-      return btn;
-    };
-    filtersEl.appendChild(mk('all', 'すべて', true));
-    categories.forEach(c => filtersEl.appendChild(mk(c, c, false)));
-    if (hasFreeItems) filtersEl.appendChild(mk('free', '0円回収', false));
-  }
-  buildFilterChips();
-
-  document.querySelectorAll('#itemsFilters .filter-chip').forEach(btn => {
+  // ---------- Filter + search listeners ----------
+  let currentFilter = 'all';
+  let currentQuery = '';
+  document.querySelectorAll('.chip[data-filter]').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('#itemsFilters .filter-chip').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      document.querySelectorAll('.chip[data-filter]').forEach(b => b.classList.remove('chip-active'));
+      btn.classList.add('chip-active');
       currentFilter = btn.dataset.filter;
-      renderGrid();
+      renderItems(currentFilter, currentQuery);
     });
   });
-  const searchInput = document.getElementById('itemsSearchInput');
-  if(searchInput){
+  const searchInput = document.getElementById('itemSearch');
+  if (searchInput) {
     searchInput.addEventListener('input', e => {
       currentQuery = e.target.value;
-      renderGrid();
+      renderItems(currentFilter, currentQuery);
     });
   }
 
-  // ---- modal + carousel ----
+  // ---------- Modal with carousel ----------
   const modal = document.getElementById('modal');
-  const modalCat = document.getElementById('modalCat');
+  const modalImg = document.getElementById("modalImg");
+  const modalImgLabel = document.getElementById("modalImgLabel");
   const modalName = document.getElementById('modalName');
   const modalPrice = document.getElementById('modalPrice');
-  const modalSubLabel = document.getElementById('modalSubLabel');
+  const modalTag = document.getElementById('modalTag');
   const modalDesc = document.getElementById('modalDesc');
   const modalNote = document.getElementById('modalNote');
-  const carousel = document.getElementById('modalCarousel');
-  const track = document.getElementById('carouselTrack');
-  const dotsWrap = document.getElementById('carouselDots');
-  const prevBtn = document.getElementById('carouselPrev');
-  const nextBtn = document.getElementById('carouselNext');
 
   let currentItem = null;
   let currentSlide = 0;
 
-  function showSlide(i){
-    if(!currentItem) return;
-    const subs = currentItem.subitems;
-    if(i < 0) i = subs.length - 1;
-    if(i >= subs.length) i = 0;
-    currentSlide = i;
-    track.querySelectorAll('.carousel-slide').forEach((el, idx) => {
-      el.classList.toggle('active', idx === i);
-    });
-    dotsWrap.querySelectorAll('.carousel-dot').forEach((el, idx) => {
-      el.classList.toggle('active', idx === i);
-    });
-    const sub = subs[i];
-    modalSubLabel.textContent = sub.label || '';
-    modalSubLabel.style.display = sub.label ? 'block' : 'none';
-    modalDesc.textContent = sub.desc || '';
-    if(sub.note){
-      modalNote.style.display = 'block';
-      modalNote.textContent = sub.note;
-    } else {
-      modalNote.style.display = 'none';
+  function showSlide(idx) {
+    if (!currentItem) return;
+    const subs = currentItem.subitems || [];
+    if (subs.length === 0) return;
+    currentSlide = ((idx % subs.length) + subs.length) % subs.length;
+    const s = subs[currentSlide];
+    if (modalImg) {
+      if (s.image) {
+        modalImg.innerHTML = '<img src="' + s.image + '" alt="' + (s.label || currentItem.name) + '" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;">';
+      } else {
+        modalImg.innerHTML = '<div class="ph-label">PHOTO · ' + (s.label || currentItem.phLabel) + '</div>';
+      }
     }
+    if (modalDesc) modalDesc.textContent = s.desc || currentItem.desc;
+    if (modalNote) {
+      modalNote.textContent = s.note || '';
+      modalNote.style.display = (s.note || '').trim() ? '' : 'none';
+    }
+    updateDots();
   }
 
-  function openModal(itemIdx){
-    const it = items[itemIdx];
-    if(!it) return;
+  function updateDots() {
+    if (!modalImg) return;
+    const imgHolder = modalImg;
+    if (!imgHolder) return;
+    let dotsWrap = document.getElementById('modalDots');
+    if (!dotsWrap) {
+      dotsWrap = document.createElement('div');
+      dotsWrap.id = 'modalDots';
+      dotsWrap.style.cssText = 'display:flex;justify-content:center;gap:6px;padding:8px 0;position:absolute;bottom:8px;left:0;right:0;z-index:2;';
+      imgHolder.style.position = 'relative';
+      imgHolder.appendChild(dotsWrap);
+    }
+    const subs = (currentItem && currentItem.subitems) || [];
+    dotsWrap.innerHTML = '';
+    if (subs.length <= 1) { dotsWrap.style.display = 'none'; return; }
+    dotsWrap.style.display = 'flex';
+    subs.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.type = 'button';
+      d.style.cssText = 'width:8px;height:8px;border-radius:50%;border:none;cursor:pointer;background:' + (i===currentSlide?'#fff':'rgba(255,255,255,.5)') + ';padding:0;';
+      d.onclick = function() { showSlide(i); };
+      dotsWrap.appendChild(d);
+    });
+    // Arrows
+    let prevArrow = document.getElementById('modalPrev');
+    let nextArrow = document.getElementById('modalNext');
+    if (!prevArrow) {
+      prevArrow = document.createElement('button');
+      prevArrow.id = 'modalPrev';
+      prevArrow.innerHTML = '‹';
+      prevArrow.style.cssText = 'position:absolute;left:8px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.5);color:#fff;border:none;width:36px;height:36px;border-radius:50%;font-size:20px;cursor:pointer;z-index:2;';
+      prevArrow.onclick = function(e) { e.stopPropagation(); showSlide(currentSlide - 1); };
+      imgHolder.appendChild(prevArrow);
+      nextArrow = document.createElement('button');
+      nextArrow.id = 'modalNext';
+      nextArrow.innerHTML = '›';
+      nextArrow.style.cssText = 'position:absolute;right:8px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.5);color:#fff;border:none;width:36px;height:36px;border-radius:50%;font-size:20px;cursor:pointer;z-index:2;';
+      nextArrow.onclick = function(e) { e.stopPropagation(); showSlide(currentSlide + 1); };
+      imgHolder.appendChild(nextArrow);
+    }
+    prevArrow.style.display = subs.length > 1 ? '' : 'none';
+    nextArrow.style.display = subs.length > 1 ? '' : 'none';
+  }
+
+  function openModal(id) {
+    const it = ITEMS.find(x => x.id === id);
+    if (!it) return;
     currentItem = it;
     currentSlide = 0;
-
-    modalCat.textContent = it.category;
-    modalName.textContent = it.name;
-    modalPrice.textContent = it.price;
-
-    // build slides
-    track.innerHTML = '';
-    dotsWrap.innerHTML = '';
-    it.subitems.forEach((sub, i) => {
-      const slide = document.createElement('div');
-      slide.className = 'carousel-slide' + (i === 0 ? ' active' : '');
-      slide.innerHTML = '<img src="' + sub.image + '" alt="' + (sub.label || it.name) + '">';
-      track.appendChild(slide);
-
-      const dot = document.createElement('button');
-      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-      dot.setAttribute('aria-label', 'スライド ' + (i + 1));
-      dot.addEventListener('click', () => showSlide(i));
-      dotsWrap.appendChild(dot);
-    });
-    carousel.classList.toggle('single', it.subitems.length <= 1);
-
+    if (modalName) modalName.textContent = it.name;
+    if (modalPrice) modalPrice.textContent = it.priceLabel;
+    if (modalTag) modalTag.textContent = it.category;
     showSlide(0);
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    if (modal) {
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
   }
-
-  function closeModal(){
-    modal.classList.remove('active');
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
-    currentItem = null;
   }
-
-  document.getElementById('modalClose').addEventListener('click', closeModal);
-  modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
+  const modalCloseBtn = document.getElementById('modalClose');
+  if (modalCloseBtn) modalCloseBtn.onclick = closeModal;
+  if (modal) modal.onclick = e => { if (e.target === modal) closeModal(); };
   document.addEventListener('keydown', e => {
-    if(!modal.classList.contains('active')) return;
-    if(e.key === 'Escape') closeModal();
-    else if(e.key === 'ArrowLeft') showSlide(currentSlide - 1);
-    else if(e.key === 'ArrowRight') showSlide(currentSlide + 1);
+    if (e.key === 'Escape') closeModal();
+    if (modal && modal.classList.contains('open')) {
+      if (e.key === 'ArrowLeft') showSlide(currentSlide - 1);
+      if (e.key === 'ArrowRight') showSlide(currentSlide + 1);
+    }
   });
 
-  prevBtn.addEventListener('click', () => showSlide(currentSlide - 1));
-  nextBtn.addEventListener('click', () => showSlide(currentSlide + 1));
+  // ---------- Simulator ----------
+  const simRows = document.getElementById('simRows');
+  const simTotal = document.getElementById('simTotal');
+  const simBreakdown = document.getElementById('simBreakdown');
+  const TRANSPORT = 5500;
 
-  // touch swipe
-  let touchStartX = null;
-  let touchStartY = null;
-  track.addEventListener('touchstart', e => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-  }, {passive:true});
-  track.addEventListener('touchend', e => {
-    if(touchStartX == null) return;
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    const dy = e.changedTouches[0].clientY - touchStartY;
-    if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)){
-      if(dx < 0) showSlide(currentSlide + 1);
-      else showSlide(currentSlide - 1);
-    }
-    touchStartX = touchStartY = null;
-  }, {passive:true});
+  function addSimRow(defaultId, defaultQty) {
+    if (!simRows) return;
+    defaultQty = defaultQty || 120;
+    const row = document.createElement('div');
+    row.className = 'sim-row';
+    const priceItems = ITEMS.filter(it => !it.free && it.price > 0);
+    if (priceItems.length === 0) return;
+    const selectedId = defaultId && priceItems.find(it => it.id === defaultId) ? defaultId : priceItems[0].id;
+    row.innerHTML =
+      '<select class="sim-item">' +
+        priceItems.map(it => '<option value="' + it.id + '"' + (it.id===selectedId?' selected':'') + '>' + it.name + '（' + it.priceLabel + '）</option>').join('') +
+      '</select>' +
+      '<div class="sim-qty-wrap" data-unit="kg">' +
+        '<input type="number" class="sim-qty" min="0" step="10" value="' + defaultQty + '">' +
+      '</div>' +
+      '<button class="sim-remove" aria-label="削除">×</button>';
+    simRows.appendChild(row);
+    row.querySelector('.sim-item').addEventListener('change', updateSim);
+    row.querySelector('.sim-qty').addEventListener('input', updateSim);
+    row.querySelector('.sim-remove').addEventListener('click', () => {
+      if (simRows.children.length <= 1) return;
+      row.remove();
+      updateSim();
+    });
+    updateSim();
+  }
 
-  renderGrid();
+  function updateSim() {
+    if (!simRows || !simTotal || !simBreakdown) return;
+    let total = 0;
+    const breakdown = [];
+    simRows.querySelectorAll('.sim-row').forEach(r => {
+      const id = r.querySelector('.sim-item').value;
+      const qty = parseFloat(r.querySelector('.sim-qty').value) || 0;
+      const it = ITEMS.find(x => x.id === id);
+      if (!it) return;
+      const price = it.price || 0;
+      const sub = price * qty;
+      total += sub;
+      if (qty > 0) {
+        breakdown.push('<div class="bd-row"><span>' + it.name + ' ' + qty + 'kg × ' + price + '円</span><span>¥' + sub.toLocaleString() + '</span></div>');
+      }
+    });
+    total += TRANSPORT;
+    breakdown.push('<div class="bd-row"><span>収集運搬費</span><span>¥' + TRANSPORT.toLocaleString() + '</span></div>');
+    simTotal.textContent = total.toLocaleString();
+    simBreakdown.innerHTML = breakdown.join('');
+  }
+
+  const simAddRow = document.getElementById('simAddRow');
+  if (simAddRow) {
+    simAddRow.addEventListener('click', () => {
+      const priceItems = ITEMS.filter(it => !it.free && it.price > 0);
+      const next = priceItems[1] || priceItems[0];
+      if (next) addSimRow(next.id, 50);
+    });
+  }
+  const firstPriceable = ITEMS.find(it => !it.free && it.price > 0);
+  if (firstPriceable) addSimRow(firstPriceable.id, 120);
+
+  // ---------- Reveal-on-scroll ----------
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('on');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // ---------- Smooth anchor offset for sticky nav ----------
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const id = a.getAttribute('href').slice(1);
+      if (!id) return;
+      const target = document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      const nav = document.getElementById('nav');
+      const navH = nav ? nav.offsetHeight : 60;
+      const y = target.getBoundingClientRect().top + window.pageYOffset - navH - 8;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    });
+  });
 })();
