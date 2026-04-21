@@ -39,22 +39,22 @@ window.RIPRO_ITEMS = [
     "free": false,
     "subitems": [
       {
-        "image": "https://placehold.co/800x600/3a945e/ffffff/jpeg?text=バケツ・ポリ容器%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "バケツ、ポリ容器",
         "desc": ""
       },
       {
-        "image": "https://placehold.co/800x600/1e2f1e/ffffff/jpeg?text=デッピングタンク%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "デッピングタンク",
         "desc": ""
       },
       {
-        "image": "https://placehold.co/800x600/3a945e/ffffff/jpeg?text=プラ容器類%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "プラ容器類",
         "desc": ""
       },
       {
-        "image": "https://placehold.co/800x600/1e2f1e/ffffff/jpeg?text=プラスチックスコップ%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "プラスチックスコップ",
         "desc": "",
         "note": "スコップの柄が木製または鉄製の部分がある場合は取り外してください。取り外していないものは混合廃棄物となります。"
@@ -75,13 +75,13 @@ window.RIPRO_ITEMS = [
         "note": "塩ビ系（塩ビ管、塩ビシート等）は単体で袋詰めしてください。他のものとの混入はできません。"
       },
       {
-        "image": "https://placehold.co/800x600/3a945e/ffffff/jpeg?text=塩ビパイプ%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "塩ビパイプ",
         "desc": "",
         "note": "塩ビ系（塩ビ管、塩ビシート等）は単体で袋詰めしてください。他のものとの混入はできません。"
       },
       {
-        "image": "https://placehold.co/800x600/1e2f1e/ffffff/jpeg?text=塩ビシート%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "塩ビシート",
         "desc": "",
         "note": "塩ビ系（塩ビ管、塩ビシート等）は単体で袋詰めしてください。他のものとの混入はできません。"
@@ -117,13 +117,13 @@ window.RIPRO_ITEMS = [
     "free": false,
     "subitems": [
       {
-        "image": "https://placehold.co/800x600/3a945e/ffffff/jpeg?text=FRP製一輪車%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "FRP製一輪車",
         "desc": "",
         "note": "取手の部分の鉄、タイヤは極力取り外してください。取り外しされていない物も回収いたしますが総重量にて計測し、FRP価格でご請求させて頂きますのでご了承ください。"
       },
       {
-        "image": "https://placehold.co/800x600/1e2f1e/ffffff/jpeg?text=子牛用ハッチ%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "子牛用ハッチ",
         "desc": "",
         "note": "FRP系の廃棄物は単体で袋詰めをお願いします。他素材のものとの混入はできません。"
@@ -138,7 +138,7 @@ window.RIPRO_ITEMS = [
     "free": false,
     "subitems": [
       {
-        "image": "https://placehold.co/800x600/3a945e/ffffff/jpeg?text=発泡スチロール%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "発泡スチロール",
         "desc": "",
         "note": "それぞれ単体で袋詰めしてください。"
@@ -165,31 +165,31 @@ window.RIPRO_ITEMS = [
         "note": "品目問わず複数混入しているものは混合廃棄物となります。塩ビ類、スタイロフォームは混合廃棄物にも混入できません。"
       },
       {
-        "image": "https://placehold.co/800x600/b71c25/ffffff/jpeg?text=ブラシ%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "ブラシ",
         "desc": "",
         "note": "品目問わず複数混入しているものは混合廃棄物となります。塩ビ類、スタイロフォームは混合廃棄物にも混入できません。"
       },
       {
-        "image": "https://placehold.co/800x600/b71c25/ffffff/jpeg?text=麻ロープ%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "麻ロープ",
         "desc": "",
         "note": "ビニール系のロープは軟プラとなります"
       },
       {
-        "image": "https://placehold.co/800x600/b71c25/ffffff/jpeg?text=電牧ロープ%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "電牧ロープ",
         "desc": "",
         "note": "品目問わず複数混入しているものは混合廃棄物となります。塩ビ類、スタイロフォームは混合廃棄物にも混入できません。"
       },
       {
-        "image": "https://placehold.co/800x600/b71c25/ffffff/jpeg?text=乳紙フィルター%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "乳紙フィルター",
         "desc": "",
         "note": "品目問わず複数混入しているものは混合廃棄物となります。塩ビ類、スタイロフォームは混合廃棄物にも混入できません。"
       },
       {
-        "image": "https://placehold.co/800x600/b71c25/ffffff/jpeg?text=使用済牛床マット%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "使用済牛床マット",
         "desc": "",
         "note": "未使用はゴムとなります。"
@@ -259,27 +259,27 @@ window.RIPRO_ITEMS = [
     "free": true,
     "subitems": [
       {
-        "image": "https://placehold.co/800x600/3a945e/ffffff/jpeg?text=段ボール%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "段ボール",
         "desc": "畳んだ状態で紐で縛ってお出しください。量が多い場合はフレコンバッグに入れていただいてもOKです。"
       },
       {
-        "image": "https://placehold.co/800x600/1e2f1e/ffffff/jpeg?text=新聞紙%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "新聞紙",
         "desc": "量が多い場合はフレコンバッグに入れていただいてもOKです。"
       },
       {
-        "image": "https://placehold.co/800x600/3a945e/ffffff/jpeg?text=紙袋%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "紙袋",
         "desc": ""
       },
       {
-        "image": "https://placehold.co/800x600/1e2f1e/ffffff/jpeg?text=ラップ芯%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "ラップ芯",
         "desc": ""
       },
       {
-        "image": "https://placehold.co/800x600/3a945e/ffffff/jpeg?text=資料袋%28紙質%29%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "資料袋（紙質）",
         "desc": ""
       }
@@ -293,12 +293,12 @@ window.RIPRO_ITEMS = [
     "free": false,
     "subitems": [
       {
-        "image": "https://placehold.co/800x600/1e2f1e/ffffff/jpeg?text=廃自動車%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "廃自動車",
         "desc": ""
       },
       {
-        "image": "https://placehold.co/800x600/1e2f1e/ffffff/jpeg?text=廃農機具%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "廃農機具",
         "desc": ""
       }
@@ -312,19 +312,19 @@ window.RIPRO_ITEMS = [
     "free": false,
     "subitems": [
       {
-        "image": "https://placehold.co/800x600/3a945e/ffffff/jpeg?text=洗濯機%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "洗濯機",
         "desc": "",
         "note": "リサイクル券必要"
       },
       {
-        "image": "https://placehold.co/800x600/1e2f1e/ffffff/jpeg?text=冷蔵庫%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "冷蔵庫",
         "desc": "",
         "note": "リサイクル券必要"
       },
       {
-        "image": "https://placehold.co/800x600/3a945e/ffffff/jpeg?text=テレビ%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "テレビ",
         "desc": "",
         "note": "リサイクル券必要"
@@ -339,13 +339,13 @@ window.RIPRO_ITEMS = [
     "free": false,
     "subitems": [
       {
-        "image": "https://placehold.co/800x600/3a945e/ffffff/jpeg?text=廃タイヤ%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "廃タイヤ",
         "desc": "普通車・軽トラサイズ。",
         "note": "99円/kg"
       },
       {
-        "image": "https://placehold.co/800x600/1e2f1e/ffffff/jpeg?text=廃タイヤ%28大型%29%0A%28写真差し替え予定%29",
+        "image": "assets/placeholder.svg",
         "label": "廃タイヤ（大型車・トラクター）",
         "desc": "トラクター・大型作業車のタイヤ。",
         "note": "132円/kg"

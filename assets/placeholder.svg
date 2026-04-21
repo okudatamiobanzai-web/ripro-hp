@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3a945e"/>
+      <stop offset="100%" stop-color="#1e2f1e"/>
+    </linearGradient>
+    <pattern id="dots" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="500" fill="url(#g)"/>
+  <rect width="800" height="500" fill="url(#dots)"/>
+  <g font-family="'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif" fill="#fff" text-anchor="middle">
+    <text x="400" y="230" font-size="56" font-weight="900" opacity="0.95">📷</text>
+    <text x="400" y="290" font-size="24" font-weight="700" opacity="0.9">写真準備中</text>
+    <text x="400" y="320" font-size="14" opacity="0.6">coming soon</text>
+  </g>
+</svg>

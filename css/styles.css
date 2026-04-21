@@ -332,6 +332,7 @@ body[data-palette="dark"] .chip { background: var(--bg-cool); }
 .items-grid {
   display:grid; grid-template-columns: repeat(4, 1fr);
   gap: 14px; margin-bottom: 18px;
+  align-items: stretch;
 }
 @media (max-width: 900px) { .items-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 640px) { .items-grid { grid-template-columns: repeat(2, 1fr); gap:10px; } }
@@ -342,22 +343,47 @@ body[data-palette="dark"] .chip { background: var(--bg-cool); }
   display:flex; flex-direction: column;
   cursor:pointer; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
   text-align:left;
+  height: 100%; /* Fill the grid row */
 }
 .item:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--brand-lt); }
 .item.item-free { border: 1.5px solid var(--brand); background: linear-gradient(180deg, var(--brand-lt), #fff 60%); }
 body[data-palette="dark"] .item.item-free { background: linear-gradient(180deg, var(--brand-lt), var(--white) 60%); }
 .item-img {
-  aspect-ratio: 5/3; position: relative;
+  aspect-ratio: 16 / 10; /* 横長長方形で統一 */
+  position: relative; overflow: hidden;
   background: repeating-linear-gradient(135deg, var(--bg-warm) 0 10px, var(--bg-cool) 10px 20px);
   display:flex; align-items:flex-end;
+  flex-shrink: 0;
 }
+.item-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .item-img .ph-label { font-size: 9px; padding: 4px 8px; margin: 6px; }
-.item-body { padding: 12px 14px 14px; display:flex; flex-direction:column; gap:2px; }
-.item-name { font-size: 13px; font-weight:700; color: var(--ink); line-height:1.4; }
+.item-body {
+  padding: 12px 14px 14px;
+  display:flex; flex-direction:column; gap:2px;
+  flex: 1 1 auto; /* Fill remaining height */
+  justify-content: space-between;
+}
+.item-name {
+  font-size: 13px; font-weight:700; color: var(--ink); line-height:1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Max 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.8em; /* Reserve 2-line space so 1-line and 2-line items align */
+}
 .item-price { font-family: var(--ff-en); font-size: 16px; font-weight:800; color: var(--ink); margin-top: 4px; }
 .item-price small { font-family: var(--ff-sans); font-size: 11px; font-weight:600; color: var(--muted); margin-left: 2px; }
 .item.item-free .item-price { color: var(--brand); }
 .item-tap { font-size: 10px; color: var(--muted-2); margin-top: 6px; letter-spacing: .1em; }
+
+/* スマホでフォントやや小さく、画像比率キープ */
+@media (max-width: 640px) {
+  .item-img { aspect-ratio: 16 / 10; }
+  .item-body { padding: 10px 10px 12px; }
+  .item-name { font-size: 12px; min-height: 2.6em; }
+  .item-price { font-size: 15px; }
+  .item-tap { font-size: 9px; }
+}
 
 .service-note { text-align:center; font-size: 12px; color: var(--muted); margin-top: 10px; }
 
