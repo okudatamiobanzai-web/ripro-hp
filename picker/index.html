@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RiPRO 画像ピッカー</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif;
+    background: #f5f5f5;
+    color: #222;
+    padding: 16px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  .sub { color: #666; font-size: 13px; margin-bottom: 16px; }
+  .toolbar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    position: sticky;
+    top: 0;
+    background: #f5f5f5;
+    padding: 8px 0;
+    z-index: 5;
+  }
+  button {
+    font: inherit;
+    border: 1px solid #bbb;
+    background: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  button.primary { background: #1f7a3a; color: #fff; border-color: #1f7a3a; }
+  button.danger { color: #b22; border-color: #e0b0b0; }
+  button:hover { background: #eee; }
+  button.primary:hover { background: #175a2c; }
+
+  .slot {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+  .slot-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .slot-title { font-weight: 600; font-size: 15px; }
+  .slot-meta { font-size: 12px; color: #666; }
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 6px;
+    background: #eee;
+    color: #555;
+  }
+  .badge.changed { background: #ffe5b4; color: #8a5a00; }
+  .badge.count { background: #dceed0; color: #2a6a33; }
+
+  .single-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+  }
+  .thumb {
+    width: 88px;
+    height: 66px;
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    font-size: 11px;
+    color: #888;
+    text-align: center;
+  }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+  .subitems { margin-top: 10px; display: flex; flex-direction: column; gap: 10px; }
+  .subitem {
+    background: #fafafa;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 88px 1fr auto;
+    gap: 10px;
+    align-items: start;
+  }
+  .subitem .fields { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .subitem .actions { display: flex; flex-direction: column; gap: 4px; align-items: stretch; }
+  .subitem input[type=text], .subitem textarea {
+    font: inherit;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px 8px;
+    width: 100%;
+  }
+  .subitem textarea { resize: vertical; min-height: 60px; font-size: 13px; }
+  .subitem .image-col { display: flex; flex-direction: column; gap: 4px; }
+  .subitem .image-col button { font-size: 12px; padding: 4px 6px; }
+  .add-sub { margin-top: 8px; }
+
+  @media (max-width: 520px) {
+    .subitem { grid-template-columns: 72px 1fr; }
+    .subitem .actions { grid-column: 1 / -1; flex-direction: row; justify-content: flex-end; flex-wrap: wrap; }
+    .thumb { width: 72px; height: 54px; }
+  }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 16px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: #fff;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .modal-head {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .modal-body {
+    padding: 12px 16px;
+    overflow: auto;
+  }
+  .candidates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+  }
+  .candidate {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 6px;
+    cursor: pointer;
+    background: #fff;
+    text-align: center;
+  }
+  .candidate:hover { border-color: #1f7a3a; }
+  .candidate img { width: 100%; height: 100px; object-fit: cover; border-radius: 4px; }
+  .candidate .fname { font-size: 11px; margin-top: 4px; word-break: break-all; }
+
+  .output-area {
+    width: 100%;
+    min-height: 200px;
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 12px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+</style>
+</head>
+<body>
+
+<h1>RiPRO 画像ピッカー</h1>
+<div class="sub">candidates/ の画像を各スロットに割り当てる。アイテム枠は複数のサブアイテム（ラベル・説明付き）を登録可能。</div>
+
+<div class="toolbar">
+  <button class="primary" id="btn-export">JSON出力</button>
+  <button id="btn-copy">クリップボードにコピー</button>
+  <button id="btn-save">保存（localStorage）</button>
+  <button id="btn-reset">デフォルトに戻す</button>
+</div>
+
+<div id="slots"></div>
+
+<h3 style="margin-top:20px">JSON出力</h3>
+<textarea class="output-area" id="output" readonly></textarea>
+
+<!-- modal -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <div class="modal-head">
+      <strong>画像を選ぶ</strong>
+      <button id="modal-close">閉じる</button>
+    </div>
+    <div class="modal-body">
+      <div style="margin-bottom:8px;">
+        <button data-filter="all" class="filter-btn primary">すべて</button>
+        <button data-filter="対応品目" class="filter-btn">対応品目</button>
+        <button data-filter="現場" class="filter-btn">現場</button>
+        <button data-filter="clear">選択解除（画像なし）</button>
+      </div>
+      <div class="candidates-grid" id="candidates-grid"></div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/items-data.js"></script>
+<script>
+const STORAGE_KEY = 'ripro_picker_assignments_v4';
+const OLD_STORAGE_KEY = 'ripro_picker_assignments_v3';
+
+const SINGLE_SLOTS = [
+  { id: 'hero', name: 'ヒーロー画像' },
+  { id: 'merit-1', name: 'メリット 1' },
+  { id: 'merit-2', name: 'メリット 2' },
+  { id: 'merit-3', name: 'メリット 3' },
+  { id: 'cleanup-before', name: 'クリーンアップ Before' },
+  { id: 'cleanup-after', name: 'クリーンアップ After' },
+  { id: 'about-portrait', name: '代表ポートレート' },
+];
+
+// Build ITEM_DEFAULTS dynamically from shared items-data.js (window.RIPRO_ITEMS)
+// This ensures HP and picker always show the same content.
+// Image paths in items-data.js are relative to site/, so we prefix "../" since picker is in site/picker/.
+const ITEM_DEFAULTS = {};
+(window.RIPRO_ITEMS || []).forEach(item => {
+  if (!item.id) return;
+  ITEM_DEFAULTS[item.id] = {
+    name: item.name,
+    category: item.category || '',
+    price: item.price || '',
+    free: !!item.free,
+    subitems: item.subitems.map(si => ({
+      image: si.image && !si.image.startsWith('http') && !si.image.startsWith('../')
+        ? '../' + si.image
+        : si.image,
+      label: si.label || '',
+      desc: si.desc || '',
+      note: si.note || ''
+    }))
+  };
+});
+
+// Maintain order from items-data.js. New items added by user appended at end.
+let itemSlotIds = Object.keys(ITEM_DEFAULTS);
+
+// Known categories (filter chip values). Users can also type new ones freely.
+const KNOWN_CATEGORIES = ['プラ・樹脂', 'ゴム・タイヤ', '金属', '木・紙', '混合廃棄物'];
+
+// state
+let candidates = [];
+let state = {}; // { slotId: string|null for single, { subitems:[...] } for items }
+let modalCallback = null;
+let modalFilter = 'all';
+
+function defaultState() {
+  const s = { _itemOrder: [...itemSlotIds] };
+  SINGLE_SLOTS.forEach(sl => s[sl.id] = null);
+  itemSlotIds.forEach(id => {
+    const d = ITEM_DEFAULTS[id];
+    s[id] = {
+      name: d.name,
+      category: d.category,
+      price: d.price,
+      free: d.free,
+      subitems: d.subitems.map(si => ({ ...si }))
+    };
+  });
+  return s;
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      const base = defaultState();
+      // restore _itemOrder if user added/reordered
+      if (Array.isArray(parsed._itemOrder)) {
+        itemSlotIds = parsed._itemOrder;
+        base._itemOrder = parsed._itemOrder;
+      }
+      // restore each slot's full data
+      Object.keys(parsed).forEach(k => {
+        if (k === '_itemOrder') return;
+        if (parsed[k] !== undefined) base[k] = parsed[k];
+      });
+      return base;
+    }
+  } catch (e) { console.warn('load failed', e); }
+  return defaultState();
+}
+
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  flash('保存しました');
+}
+
+function flash(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:8px 16px;border-radius:6px;z-index:200;font-size:13px;';
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 1500);
+}
+
+async function loadCandidates() {
+  try {
+    const res = await fetch('../candidates/manifest.json');
+    const m = await res.json();
+    candidates = m.candidates || [];
+  } catch (e) {
+    console.error(e);
+    candidates = [];
+  }
+}
+
+function candidateSrc(filename) {
+  if (!filename) return null;
+  if (filename.startsWith('../')) return filename; // default img path
+  return '../candidates/' + filename;
+}
+
+function render() {
+  const container = document.getElementById('slots');
+  container.innerHTML = '';
+
+  SINGLE_SLOTS.forEach(sl => {
+    container.appendChild(renderSingleSlot(sl));
+  });
+  itemSlotIds.forEach(id => {
+    container.appendChild(renderItemSlot(id));
+  });
+
+  // 「新しい品目を追加」ボタン
+  const addBtn = document.createElement('button');
+  addBtn.className = 'add-sub';
+  addBtn.style.cssText = 'margin-top:16px;padding:14px;font-size:15px;font-weight:700;background:#3a945e;color:#fff;border:none;border-radius:8px;width:100%;cursor:pointer;';
+  addBtn.textContent = '＋ 新しい品目を追加（大枠）';
+  addBtn.onclick = addNewItem;
+  container.appendChild(addBtn);
+
+  updateOutput();
+}
+
+function addNewItem() {
+  const newId = 'item-custom-' + Date.now();
+  state[newId] = {
+    name: '新しい品目',
+    category: KNOWN_CATEGORIES[0],
+    price: '',
+    free: false,
+    subitems: []
+  };
+  itemSlotIds.push(newId);
+  state._itemOrder = [...itemSlotIds];
+  render();
+  // Scroll to the new item
+  setTimeout(() => {
+    const slots = document.querySelectorAll('.slot');
+    slots[slots.length - 1]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
+}
+
+function deleteItem(id) {
+  if (!confirm(`「${state[id]?.name || id}」を削除します。よろしいですか？`)) return;
+  delete state[id];
+  itemSlotIds = itemSlotIds.filter(x => x !== id);
+  state._itemOrder = [...itemSlotIds];
+  render();
+}
+
+function renderSingleSlot(sl) {
+  const div = document.createElement('div');
+  div.className = 'slot';
+  const val = state[sl.id];
+  const changed = val !== null;
+
+  div.innerHTML = `
+    <div class="slot-header">
+      <div>
+        <span class="slot-title">${sl.name}</span>
+        <span class="slot-meta">(${sl.id})</span>
+        ${changed ? '<span class="badge changed">変更あり</span>' : ''}
+      </div>
+    </div>
+    <div class="single-row">
+      <div class="thumb">${val ? `<img src="${candidateSrc(val)}" alt="">` : '画像未選択'}</div>
+      <div style="flex:1;">
+        <div style="font-size:12px;color:#555;margin-bottom:4px;">${val ? val : '（未選択）'}</div>
+        <button data-act="pick">画像を選ぶ</button>
+        ${val ? '<button data-act="clear">クリア</button>' : ''}
+      </div>
+    </div>
+  `;
+  div.querySelector('[data-act="pick"]').onclick = () => {
+    openModal((chosen) => {
+      state[sl.id] = chosen;
+      render();
+    });
+  };
+  const clearBtn = div.querySelector('[data-act="clear"]');
+  if (clearBtn) clearBtn.onclick = () => { state[sl.id] = null; render(); };
+
+  return div;
+}
+
+function renderItemSlot(id) {
+  const div = document.createElement('div');
+  div.className = 'slot';
+  const meta = ITEM_DEFAULTS[id] || { name:'', category:'', price:'', free:false, subitems:[] };
+  const cur = state[id] || { name:'新規品目', category:'', price:'', free:false, subitems:[] };
+  const count = cur.subitems.length;
+  const isCustom = !ITEM_DEFAULTS[id]; // user-added
+  const changed = isCustom || JSON.stringify(cur) !== JSON.stringify({...meta});
+
+  // build category datalist options
+  const allCats = Array.from(new Set([...KNOWN_CATEGORIES, cur.category].filter(Boolean)));
+
+  div.innerHTML = `
+    <div class="slot-header">
+      <div style="flex:1;">
+        <span class="slot-title">${escapeHtml(cur.name)}</span>
+        <span class="slot-meta">(${id})</span>
+        <span class="badge count">サブアイテム ${count}件</span>
+        ${changed ? '<span class="badge changed">変更あり</span>' : ''}
+        ${isCustom ? '<span class="badge" style="background:#fef3c7;color:#92400e;">新規追加</span>' : ''}
+      </div>
+      <button class="danger" data-act="delete-item" title="この品目を削除" style="margin-left:auto;">× 品目削除</button>
+    </div>
+
+    <div class="item-meta-fields" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px;background:#f9fafb;border-radius:6px;margin-bottom:12px;">
+      <div>
+        <label style="font-size:11px;color:#666;display:block;margin-bottom:2px;">品目名</label>
+        <input type="text" data-mf="name" value="${escapeAttr(cur.name)}" style="width:100%;padding:6px 8px;border:1px solid #ddd;border-radius:4px;font-size:14px;">
+      </div>
+      <div>
+        <label style="font-size:11px;color:#666;display:block;margin-bottom:2px;">カテゴリ（フィルタ分類）</label>
+        <input type="text" data-mf="category" value="${escapeAttr(cur.category)}" list="category-list-${id}" placeholder="プラ・樹脂 など" style="width:100%;padding:6px 8px;border:1px solid #ddd;border-radius:4px;font-size:14px;">
+        <datalist id="category-list-${id}">
+          ${allCats.map(c => `<option value="${escapeAttr(c)}">`).join('')}
+        </datalist>
+      </div>
+      <div>
+        <label style="font-size:11px;color:#666;display:block;margin-bottom:2px;">価格</label>
+        <input type="text" data-mf="price" value="${escapeAttr(cur.price)}" placeholder="66円/kg, 別途お見積り など" style="width:100%;padding:6px 8px;border:1px solid #ddd;border-radius:4px;font-size:14px;">
+      </div>
+      <div style="display:flex;align-items:flex-end;">
+        <label style="font-size:13px;display:flex;align-items:center;gap:6px;cursor:pointer;">
+          <input type="checkbox" data-mf="free" ${cur.free ? 'checked' : ''}>
+          0円回収（緑枠表示）
+        </label>
+      </div>
+    </div>
+
+    <div class="subitems" data-subs></div>
+    <button class="add-sub" data-act="add">＋ サブアイテム追加</button>
+  `;
+
+  const subsEl = div.querySelector('[data-subs]');
+  cur.subitems.forEach((si, idx) => {
+    subsEl.appendChild(renderSubitem(id, idx, si, cur.subitems.length));
+  });
+
+  div.querySelector('[data-act="add"]').onclick = () => {
+    cur.subitems.push({ image: null, label: '', desc: '', note: '' });
+    state[id] = cur;
+    render();
+  };
+
+  div.querySelector('[data-act="delete-item"]').onclick = () => deleteItem(id);
+
+  // metadata field inputs
+  ['name','category','price'].forEach(f => {
+    const el = div.querySelector(`[data-mf="${f}"]`);
+    el.oninput = () => {
+      cur[f] = el.value;
+      state[id] = cur;
+      updateOutput();
+      // update title without full re-render to keep focus
+      if (f === 'name') {
+        const titleEl = div.querySelector('.slot-title');
+        if (titleEl) titleEl.textContent = el.value;
+      }
+    };
+  });
+  const freeEl = div.querySelector('[data-mf="free"]');
+  freeEl.onchange = () => {
+    cur.free = freeEl.checked;
+    state[id] = cur;
+    updateOutput();
+  };
+
+  return div;
+}
+
+function renderSubitem(slotId, idx, si, total) {
+  const row = document.createElement('div');
+  row.className = 'subitem';
+  const imgSrc = si.image ? candidateSrc(si.image) : null;
+  row.innerHTML = `
+    <div class="image-col">
+      <div class="thumb">${imgSrc ? `<img src="${imgSrc}" alt="">` : '画像未選択'}</div>
+      <button data-act="pick">画像を選ぶ</button>
+    </div>
+    <div class="fields">
+      <input type="text" data-f="label" placeholder="ラップフィルム など" value="${escapeAttr(si.label || '')}">
+      <textarea data-f="desc" rows="3" placeholder="詳細説明">${escapeHtml(si.desc || '')}</textarea>
+      <input type="text" data-f="note" placeholder="注意事項（任意）" value="${escapeAttr(si.note || '')}">
+      <div style="font-size:11px;color:#888;">${si.image || '（画像未選択）'}</div>
+    </div>
+    <div class="actions">
+      ${idx > 0 ? '<button data-act="up" title="上へ">↑</button>' : ''}
+      ${idx < total - 1 ? '<button data-act="down" title="下へ">↓</button>' : ''}
+      <button class="danger" data-act="del" title="削除">×</button>
+    </div>
+  `;
+
+  const cur = state[slotId];
+
+  row.querySelector('[data-act="pick"]').onclick = () => {
+    openModal((chosen) => {
+      cur.subitems[idx].image = chosen;
+      render();
+    });
+  };
+  ['label','desc','note'].forEach(f => {
+    const el = row.querySelector(`[data-f="${f}"]`);
+    el.oninput = () => {
+      cur.subitems[idx][f] = el.value;
+      updateOutput();
+    };
+  });
+  row.querySelector('[data-act="del"]').onclick = () => {
+    cur.subitems.splice(idx, 1);
+    render();
+  };
+  const upBtn = row.querySelector('[data-act="up"]');
+  if (upBtn) upBtn.onclick = () => {
+    [cur.subitems[idx-1], cur.subitems[idx]] = [cur.subitems[idx], cur.subitems[idx-1]];
+    render();
+  };
+  const downBtn = row.querySelector('[data-act="down"]');
+  if (downBtn) downBtn.onclick = () => {
+    [cur.subitems[idx+1], cur.subitems[idx]] = [cur.subitems[idx], cur.subitems[idx+1]];
+    render();
+  };
+
+  return row;
+}
+
+function escapeHtml(s) {
+  return (s||'').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[c]);
+}
+function escapeAttr(s) {
+  return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+}
+
+// Modal
+function openModal(cb) {
+  modalCallback = cb;
+  modalFilter = 'all';
+  renderCandidates();
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  modalCallback = null;
+}
+function renderCandidates() {
+  const grid = document.getElementById('candidates-grid');
+  grid.innerHTML = '';
+  const filtered = modalFilter === 'all'
+    ? candidates
+    : candidates.filter(c => c.category === modalFilter);
+  filtered.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'candidate';
+    el.innerHTML = `
+      <img src="../candidates/${c.file}" alt="" loading="lazy">
+      <div class="fname">${c.file}</div>
+      <div style="font-size:10px;color:#888;">${c.subcategory || ''}</div>
+    `;
+    el.onclick = () => {
+      if (modalCallback) modalCallback(c.file);
+      closeModal();
+    };
+    grid.appendChild(el);
+  });
+}
+
+document.getElementById('modal-close').onclick = closeModal;
+document.getElementById('modal').onclick = (e) => {
+  if (e.target.id === 'modal') closeModal();
+};
+document.querySelectorAll('.filter-btn').forEach(b => {
+  b.onclick = () => {
+    modalFilter = b.dataset.filter;
+    document.querySelectorAll('.filter-btn').forEach(x => x.classList.remove('primary'));
+    b.classList.add('primary');
+    renderCandidates();
+  };
+});
+document.querySelector('[data-filter="clear"]').onclick = () => {
+  if (modalCallback) modalCallback(null);
+  closeModal();
+};
+
+// Output
+function buildOutput() {
+  const assignments = {};
+  SINGLE_SLOTS.forEach(sl => { assignments[sl.id] = state[sl.id] || null; });
+
+  // Build full items array preserving order
+  const items = [];
+  itemSlotIds.forEach(id => {
+    const cur = state[id];
+    if (!cur) return;
+    items.push({
+      id,
+      name: cur.name || '',
+      category: cur.category || '',
+      price: cur.price || '',
+      free: !!cur.free,
+      subitems: (cur.subitems || []).map(si => {
+        // strip ../ prefix from candidate paths so it's HP-relative
+        let img = si.image || null;
+        if (img && img.startsWith('../')) img = img.slice(3);
+        const o = { image: img, label: si.label || '', desc: si.desc || '' };
+        if (si.note) o.note = si.note;
+        return o;
+      })
+    });
+    // Also keep backward-compat assignment entry
+    assignments[id] = items[items.length - 1];
+  });
+
+  return {
+    generated_at: new Date().toISOString(),
+    items,        // ★ 完全な品目リスト（HP反映用）
+    assignments   // 個別スロット参照用
+  };
+}
+function updateOutput() {
+  document.getElementById('output').value = JSON.stringify(buildOutput(), null, 2);
+}
+
+document.getElementById('btn-export').onclick = () => {
+  updateOutput();
+  const blob = new Blob([document.getElementById('output').value], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'assignments.json';
+  a.click();
+};
+document.getElementById('btn-copy').onclick = async () => {
+  updateOutput();
+  await navigator.clipboard.writeText(document.getElementById('output').value);
+  flash('コピーしました');
+};
+document.getElementById('btn-save').onclick = saveState;
+document.getElementById('btn-reset').onclick = () => {
+  if (!confirm('デフォルトに戻します。よろしいですか？')) return;
+  itemSlotIds = Object.keys(ITEM_DEFAULTS);
+  state = defaultState();
+  render();
+};
+
+// init
+(async function init() {
+  await loadCandidates();
+  state = loadState();
+  render();
+})();
+</script>
+</body>
+</html>
