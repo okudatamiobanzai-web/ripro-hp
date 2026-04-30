@@ -223,84 +223,345 @@
       "category": "現場",
       "subcategory": "集荷風景",
       "description": "クレーン付きトラックで廃プラフレコンを積込む作業（残雪・青空）",
-      "suitable_for": ["hero", "merit-2"]
+      "suitable_for": [
+        "hero",
+        "merit-2"
+      ]
     },
     {
       "file": "現場_分別作業_01.jpeg",
       "category": "現場",
       "subcategory": "分別作業",
       "description": "作業員が農場でフレコン袋に廃プラを分別投入している様子",
-      "suitable_for": ["merit-2"]
+      "suitable_for": [
+        "merit-2"
+      ]
     },
     {
       "file": "現場_牧場廃プラ_01.jpeg",
       "category": "現場",
       "subcategory": "牧場現場",
       "description": "サイロ横に堆積した牧場由来の廃プラ（回収前のビフォア）",
-      "suitable_for": ["cleanup-before", "merit-1"]
+      "suitable_for": [
+        "cleanup-before",
+        "merit-1"
+      ]
     },
     {
       "file": "現場_トラック積込_01.jpeg",
       "category": "現場",
       "subcategory": "集荷風景",
       "description": "クレーン付きトラックにフレコン袋を積み込む集荷シーン",
-      "suitable_for": ["hero", "merit-2"]
+      "suitable_for": [
+        "hero",
+        "merit-2"
+      ]
     },
     {
       "file": "現場_フレコン搬出_01.jpeg",
       "category": "現場",
       "subcategory": "集荷風景",
       "description": "スタッフがフレコン袋を運び出し整頓している現場",
-      "suitable_for": ["merit-2"]
+      "suitable_for": [
+        "merit-2"
+      ]
     },
     {
       "file": "現場_工場内梱包_01.jpeg",
       "category": "現場",
       "subcategory": "工場",
       "description": "工場内でラップ類をまとめ梱包している作業員",
-      "suitable_for": ["merit-3", "merit-2"]
+      "suitable_for": [
+        "merit-3",
+        "merit-2"
+      ]
     },
     {
       "file": "現場_重機分別_01.jpeg",
       "category": "現場",
       "subcategory": "工場",
       "description": "工場内で重機アームを使って廃プラをラインに投入する様子",
-      "suitable_for": ["merit-3"]
+      "suitable_for": [
+        "merit-3"
+      ]
     },
     {
       "file": "現場_重機分別_02.jpeg",
       "category": "現場",
       "subcategory": "工場",
       "description": "工場内で黄色重機がフレコンを吊り上げて分別する様子",
-      "suitable_for": ["merit-3"]
+      "suitable_for": [
+        "merit-3"
+      ]
     },
     {
       "file": "現場_工場内投入_01.jpeg",
       "category": "現場",
       "subcategory": "工場",
       "description": "倉庫型工場でバックホーが廃プラを投入エリアへ運ぶ様子",
-      "suitable_for": ["merit-3"]
+      "suitable_for": [
+        "merit-3"
+      ]
     },
     {
       "file": "現場_再生ペレット_01.jpeg",
       "category": "現場",
       "subcategory": "再資源化",
       "description": "再生された黒色プラスチックペレット（クリーンアップのアフター）",
-      "suitable_for": ["merit-3", "cleanup-after"]
+      "suitable_for": [
+        "merit-3",
+        "cleanup-after"
+      ]
     },
     {
       "file": "現場_ペレット製造_01.jpeg",
       "category": "現場",
       "subcategory": "再資源化",
       "description": "ペレット製造装置から落下する再生プラ素材のクローズアップ",
-      "suitable_for": ["merit-3"]
+      "suitable_for": [
+        "merit-3"
+      ]
     },
     {
       "file": "現場_フレコン在庫_01.jpeg",
       "category": "現場",
       "subcategory": "倉庫",
       "description": "倉庫に整然と積み上げられたフレコンバッグの在庫",
-      "suitable_for": ["merit-1", "merit-3"]
+      "suitable_for": [
+        "merit-1",
+        "merit-3"
+      ]
+    },
+    {
+      "file": "FRP製一輪車.png",
+      "category": "対応品目",
+      "subcategory": "FRP",
+      "description": "FRP製の一輪車",
+      "suitable_for": [
+        "item-wood"
+      ]
+    },
+    {
+      "file": "たけ箒.jpg",
+      "category": "対応品目",
+      "subcategory": "木",
+      "description": "竹箒（清掃道具）",
+      "suitable_for": []
+    },
+    {
+      "file": "ゴムホース.png",
+      "category": "対応品目",
+      "subcategory": "ゴム",
+      "description": "ゴム製ホース",
+      "suitable_for": [
+        "item-metal"
+      ]
+    },
+    {
+      "file": "ゴム手袋.png",
+      "category": "対応品目",
+      "subcategory": "ゴム",
+      "description": "使用済みゴム手袋",
+      "suitable_for": [
+        "item-metal"
+      ]
+    },
+    {
+      "file": "シリコンホース.png",
+      "category": "対応品目",
+      "subcategory": "樹脂",
+      "description": "シリコン製ホース",
+      "suitable_for": [
+        "item-tire"
+      ]
+    },
+    {
+      "file": "スタイロフォーム.png",
+      "category": "対応品目",
+      "subcategory": "発泡",
+      "description": "スタイロフォーム断熱材",
+      "suitable_for": [
+        "item-vinyl"
+      ]
+    },
+    {
+      "file": "ニトリル手袋.png",
+      "category": "対応品目",
+      "subcategory": "樹脂",
+      "description": "ニトリル製使い捨て手袋",
+      "suitable_for": [
+        "item-tire"
+      ]
+    },
+    {
+      "file": "バケツ、ポリ容器.jpg",
+      "category": "対応品目",
+      "subcategory": "硬プラ",
+      "description": "使用済みバケツ・ポリ容器",
+      "suitable_for": [
+        "item-tire"
+      ]
+    },
+    {
+      "file": "ブラシ.jpg",
+      "category": "対応品目",
+      "subcategory": "清掃",
+      "description": "デッキブラシ系の清掃道具",
+      "suitable_for": []
+    },
+    {
+      "file": "ブルーシート4.jpg",
+      "category": "対応品目",
+      "subcategory": "軟プラ",
+      "description": "使用済みブルーシート",
+      "suitable_for": [
+        "item-wrap"
+      ]
+    },
+    {
+      "file": "プラスチックスコップ.jpg",
+      "category": "対応品目",
+      "subcategory": "硬プラ",
+      "description": "プラ製スコップ",
+      "suitable_for": [
+        "item-tire"
+      ]
+    },
+    {
+      "file": "プラ容器類.jpg",
+      "category": "対応品目",
+      "subcategory": "硬プラ",
+      "description": "各種プラスチック容器類",
+      "suitable_for": [
+        "item-tire"
+      ]
+    },
+    {
+      "file": "フレコンバック.jpg",
+      "category": "対応品目",
+      "subcategory": "軟プラ",
+      "description": "使用済みフレコンバッグ",
+      "suitable_for": [
+        "item-wrap"
+      ]
+    },
+    {
+      "file": "ライナーゴム.jpg",
+      "category": "対応品目",
+      "subcategory": "ゴム",
+      "description": "搾乳機ライナーゴム",
+      "suitable_for": [
+        "item-metal"
+      ]
+    },
+    {
+      "file": "乳紙フィルター.jpg",
+      "category": "対応品目",
+      "subcategory": "紙",
+      "description": "使用済み乳紙フィルター",
+      "suitable_for": [
+        "item-paper"
+      ]
+    },
+    {
+      "file": "作業用前掛け.jpg",
+      "category": "対応品目",
+      "subcategory": "衣類",
+      "description": "使用済み作業用前掛け",
+      "suitable_for": []
+    },
+    {
+      "file": "使用済み牛床マット.jpg",
+      "category": "対応品目",
+      "subcategory": "ゴム",
+      "description": "使用済み牛床マット",
+      "suitable_for": [
+        "item-metal"
+      ]
+    },
+    {
+      "file": "塩ビシート.jpg",
+      "category": "対応品目",
+      "subcategory": "塩ビ",
+      "description": "使用済み塩ビシート",
+      "suitable_for": [
+        "item-hardplastic"
+      ]
+    },
+    {
+      "file": "塩ビパイプ.jpg",
+      "category": "対応品目",
+      "subcategory": "塩ビ",
+      "description": "使用済み塩ビパイプ",
+      "suitable_for": [
+        "item-hardplastic"
+      ]
+    },
+    {
+      "file": "子牛用ハッチ.png",
+      "category": "対応品目",
+      "subcategory": "FRP",
+      "description": "FRP製子牛用カーフハッチ",
+      "suitable_for": [
+        "item-wood"
+      ]
+    },
+    {
+      "file": "木製パレット.jpg",
+      "category": "対応品目",
+      "subcategory": "木",
+      "description": "使用済み木製パレット",
+      "suitable_for": [
+        "item-rubber"
+      ]
+    },
+    {
+      "file": "発泡スチロール.png",
+      "category": "対応品目",
+      "subcategory": "発泡",
+      "description": "発泡スチロール梱包材",
+      "suitable_for": [
+        "item-vinyl"
+      ]
+    },
+    {
+      "file": "皮バンド.jpg",
+      "category": "対応品目",
+      "subcategory": "革",
+      "description": "革製ベルト・バンド",
+      "suitable_for": []
+    },
+    {
+      "file": "紙プラ.jpg",
+      "category": "対応品目",
+      "subcategory": "軟プラ",
+      "description": "紙とラミネートされた防水フィルム類",
+      "suitable_for": [
+        "item-wrap"
+      ]
+    },
+    {
+      "file": "長靴.png",
+      "category": "対応品目",
+      "subcategory": "ゴム",
+      "description": "使用済みゴム長靴",
+      "suitable_for": [
+        "item-metal"
+      ]
+    },
+    {
+      "file": "電牧ロープ.jpg",
+      "category": "対応品目",
+      "subcategory": "ロープ",
+      "description": "電気牧柵用ロープ",
+      "suitable_for": []
+    },
+    {
+      "file": "麻ロープ.jpg",
+      "category": "対応品目",
+      "subcategory": "ロープ",
+      "description": "麻製ロープ",
+      "suitable_for": []
     }
   ]
 }

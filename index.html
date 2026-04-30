@@ -29,6 +29,7 @@
     <a href="#merit">メリット</a>
     <a href="#service">対応品目</a>
     <a href="#price">料金</a>
+    <a href="#recycle">リサイクル</a>
     <a href="#flow">流れ</a>
     <a href="#faq">FAQ</a>
   </nav>
@@ -234,21 +235,25 @@
       <p class="sec-desc">カードをタップすると詳細と注意事項をご覧いただけます。</p>
     </div>
 
-    <!-- Filter chips -->
-    <div class="item-filter" role="tablist">
-      <button class="chip chip-active" data-filter="all">すべて</button>
-      <button class="chip" data-filter="plastic">プラ・樹脂</button>
-      <button class="chip" data-filter="rubber">ゴム・タイヤ</button>
-      <button class="chip" data-filter="metal">金属</button>
-      <button class="chip" data-filter="wood">木・紙</button>
-      <button class="chip" data-filter="free">0円回収</button>
-      <div class="item-search">
-        <span>🔍</span>
-        <input type="text" id="itemSearch" placeholder="品目名で検索（例：タイヤ）">
-      </div>
-    </div>
+    <div class="categories-grid" id="categoriesGrid"></div>
 
-    <div class="items-grid" id="itemsGrid"></div>
+    <details class="items-table-details reveal">
+      <summary>
+        <span class="items-table-summary-left">
+          <span class="items-table-summary-icon">📋</span>
+          <span>全品目を表で見る</span>
+          <span class="items-table-summary-count">13品目</span>
+        </span>
+        <span class="items-table-summary-chev" aria-hidden="true">▼</span>
+      </summary>
+      <div class="items-table-wrap">
+        <table class="items-table" id="itemsTable"></table>
+        <div class="items-table-search">
+          <span>🔍</span>
+          <input type="text" id="itemSearch" placeholder="品目名で検索（例：タイヤ）">
+        </div>
+      </div>
+    </details>
 
     <p class="service-note">※ 別途 収集運搬費 1回 5,500円がかかります。</p>
 
@@ -338,6 +343,89 @@
   </div>
 </section>
 
+<!-- =================== RECYCLE / PROCESS =================== -->
+<section class="sec sec-recycle" id="recycle">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-eyebrow">RECYCLE</p>
+      <h2 class="sec-title">「捨てる」じゃなく、<br class="sp-only">「原料にする」。</h2>
+      <p class="sec-desc">別海で回収したラップは、海を渡って<br class="sp-only">道路資材として生まれ変わります。</p>
+    </div>
+
+    <p class="recycle-lead reveal">
+      リプロが集めた農業廃棄物は、町外で燃やされて終わりではありません。<br>
+      別海町内の<strong>グリーンアース工場</strong>で再生原料（ペレット）に生まれ変わり、海を渡って新しい製品になります。<br>
+      <strong>回収からペレット化までを町内で完結できるのは、リプロとグリーンアースだけ。</strong>
+    </p>
+
+    <!-- 4-panel recycle flow -->
+    <div class="recycle-panels">
+      <article class="recycle-panel reveal" data-step="1">
+        <div class="recycle-panel-img">
+          <img src="assets/recycle/01_collection.jpg" alt="酪農家からの廃プラ回収シーン" loading="lazy">
+          <span class="recycle-panel-num">01</span>
+          <span class="recycle-panel-scope recycle-scope-local">別海町内</span>
+        </div>
+        <div class="recycle-panel-body">
+          <div class="recycle-panel-eyebrow">COLLECT</div>
+          <h3>酪農家から、廃プラを回収</h3>
+          <p>契約農家を毎月定期巡回。メッシュカゴに詰められたラップやプラ類を、クレーン付きトラックでまとめて引き取ります。</p>
+        </div>
+      </article>
+
+      <article class="recycle-panel reveal" data-step="2">
+        <div class="recycle-panel-img">
+          <img src="assets/recycle/02_sorting.jpg" alt="屋内倉庫での重機を使った分別作業" loading="lazy">
+          <span class="recycle-panel-num">02</span>
+          <span class="recycle-panel-scope recycle-scope-local">別海町内</span>
+        </div>
+        <div class="recycle-panel-body">
+          <div class="recycle-panel-eyebrow">SORT</div>
+          <h3>種類ごとに、丁寧に分別</h3>
+          <p>自社倉庫でラップ・ネット・シートなどを重機と目視で仕分け。後工程の品質を決める、一番大事な工程です。</p>
+        </div>
+      </article>
+
+      <article class="recycle-panel recycle-panel-hero reveal" data-step="3">
+        <div class="recycle-panel-img">
+          <img src="assets/recycle/03_pelletizing.jpg" alt="グリーンアース工場でのペレット製造" loading="lazy">
+          <span class="recycle-panel-num">03</span>
+          <span class="recycle-panel-scope recycle-scope-local">別海町内</span>
+          <span class="recycle-panel-hero-badge">町内で完結する<br>唯一の工程</span>
+        </div>
+        <div class="recycle-panel-body">
+          <div class="recycle-panel-eyebrow recycle-panel-eyebrow-hero">CLIMAX</div>
+          <h3>町内で、再生ペレットに生まれ変わる</h3>
+          <p>町内の<strong>グリーンアース工場</strong>で、分別済みの廃プラを破砕・溶融・押出し、黒い再生ペレットに。<strong>回収〜再原料化を町内で一貫できるのは、別海町でリプロだけ。</strong></p>
+        </div>
+      </article>
+
+      <article class="recycle-panel reveal" data-step="4">
+        <div class="recycle-panel-img">
+          <img src="assets/recycle/04_export_road.jpg" alt="港から海外へ出荷され道路舗装の原料として再利用" loading="lazy">
+          <span class="recycle-panel-num">04</span>
+          <span class="recycle-panel-scope recycle-scope-global">世界へ</span>
+        </div>
+        <div class="recycle-panel-body">
+          <div class="recycle-panel-eyebrow">GLOBAL</div>
+          <h3>海を渡って、道路の素材に</h3>
+          <p>港から海外へ出荷された再生ペレットは、現地で舗装道路の下地資材として再利用され、インフラを支える素材に。</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="recycle-closing reveal">
+      <p class="recycle-closing-text">
+        私たちが引き受けるのは「ゴミ」ではなく、<br class="sp-only"><strong>「まだ使える資源」</strong>です。<br>
+        分別にご協力いただくほど、<br class="sp-only">循環の輪は確実に広がっていきます。
+      </p>
+      <p class="recycle-footnote">
+        ※ グリーンアース工場は別海町内にあり、リプロ代表の八木が取締役を務めています。回収から再原料化までを連携して運営しています。
+      </p>
+    </div>
+  </div>
+</section>
+
 <!-- =================== BEFORE / AFTER =================== -->
 <section class="sec sec-ba">
   <div class="wrap">
@@ -363,20 +451,6 @@
         </div>
       </div>
 
-      <div class="ba-card reveal">
-        <div class="ba-images">
-          <div class="ba-before" data-ph="Before：廃機械・鉄くず">
-            <span class="ba-tag ba-tag-before">BEFORE</span>
-          </div>
-          <div class="ba-after" data-ph="After：更地に">
-            <span class="ba-tag ba-tag-after">AFTER</span>
-          </div>
-        </div>
-        <div class="ba-body">
-          <h3>B牧場さま｜廃農機・鉄くず一式</h3>
-          <p>使わなくなった農機具と金属くずを重機で搬出。金属は1t以上だったため買取でお戻しできました。</p>
-        </div>
-      </div>
     </div>
 
     <div class="cleanup-price reveal">
@@ -694,22 +768,16 @@
   </a>
 </div>
 
-<!-- =================== ITEM MODAL =================== -->
-<div class="modal-ov" id="modal" role="dialog" aria-hidden="true">
-  <div class="modal">
+<!-- =================== CATEGORY MODAL =================== -->
+<div class="modal-ov" id="modal" role="dialog" aria-hidden="true" aria-labelledby="catModalTitle">
+  <div class="cat-modal">
     <button class="modal-close" id="modalClose" aria-label="閉じる">×</button>
-    <div class="modal-img" id="modalImg">
-      <div class="ph-label">PHOTO · <span id="modalImgLabel"></span></div>
-    </div>
-    <div class="modal-body">
-      <div class="modal-pricebar">
-        <span class="modal-tag" id="modalTag"></span>
-        <span class="modal-price" id="modalPrice"></span>
-      </div>
-      <h3 id="modalName"></h3>
-      <p class="modal-desc" id="modalDesc"></p>
-      <div class="modal-note" id="modalNote"></div>
-    </div>
+    <header class="cat-modal-header">
+      <div class="cat-modal-eyebrow" id="catModalEyebrow"></div>
+      <h3 class="cat-modal-title" id="catModalTitle"></h3>
+      <p class="cat-modal-summary" id="catModalSummary"></p>
+    </header>
+    <div class="cat-modal-body" id="catModalBody"></div>
   </div>
 </div>
 

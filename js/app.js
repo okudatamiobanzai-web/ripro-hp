@@ -22,182 +22,186 @@
     };
   });
 
-  // ---------- Filter chips (dynamic) ----------
-  const chipsContainer = document.querySelector('.sec-service .chips');
-  function buildChips() {
-    if (!chipsContainer) return;
-    const cats = [];
-    ITEMS.forEach(it => {
-      if (it.category && !cats.includes(it.category)) cats.push(it.category);
-    });
-    const hasFree = ITEMS.some(it => it.free);
-    chipsContainer.innerHTML = '';
-    const mk = (filter, label, active) => {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'chip' + (active ? ' chip-active' : '');
-      b.dataset.filter = filter;
-      b.textContent = label;
-      return b;
-    };
-    chipsContainer.appendChild(mk('all', 'すべて', true));
-    cats.forEach(c => chipsContainer.appendChild(mk(c, c, false)));
-    if (hasFree) chipsContainer.appendChild(mk('free', '0円回収', false));
-  }
-  buildChips();
+  // ---------- Categories (groupings of ITEMS) ----------
+  const CATEGORIES = [
+    {
+      id: 'cat-plastic',
+      emoji: '🧴',
+      name: 'プラスチック類',
+      summary: 'ラップ、硬プラ、塩ビ系シート/パイプ',
+      priceRange: '¥66〜132 / kg',
+      itemIds: ['item-wrap', 'item-tire', 'item-hardplastic'],
+    },
+    {
+      id: 'cat-rubber',
+      emoji: '🛞',
+      name: 'ゴム・タイヤ',
+      summary: 'タイヤ各種、ゴム類',
+      priceRange: '¥99〜132 / kg',
+      itemIds: ['item-metal', 'item-tires'],
+    },
+    {
+      id: 'cat-wood',
+      emoji: '📦',
+      name: '木材・紙類',
+      summary: '木製パレット、段ボールなど',
+      priceRange: '0円回収〜¥66 / kg',
+      itemIds: ['item-rubber', 'item-paper'],
+      free: true,
+    },
+    {
+      id: 'cat-foam',
+      emoji: '🧩',
+      name: '発泡・FRP',
+      summary: '発泡スチロール、子牛用ハッチ等',
+      priceRange: '¥132〜330 / kg',
+      itemIds: ['item-vinyl', 'item-wood'],
+    },
+    {
+      id: 'cat-mixed',
+      emoji: '🗑',
+      name: '混合・家電',
+      summary: '混合廃棄物、家電製品',
+      priceRange: '¥132〜 / 個別お見積り',
+      itemIds: ['item-foam', 'item-appliance'],
+    },
+    {
+      id: 'cat-metal',
+      emoji: '⚙️',
+      name: '金属・機械',
+      summary: '金属くず、機械部品',
+      priceRange: '0円回収〜有価買取',
+      itemIds: ['item-mixed', 'item-machine'],
+      free: true,
+    },
+  ];
 
-  // ---------- Item grid rendering ----------
-  const grid = document.getElementById('itemsGrid');
-  function renderItems(filter, query) {
-    if (!grid) return;
-    filter = filter || 'all';
-    query = query || '';
-    grid.innerHTML = '';
-    const q = query.trim().toLowerCase();
+  // ---------- Category cards rendering ----------
+  const catGrid = document.getElementById('categoriesGrid');
+  function renderCategories() {
+    if (!catGrid) return;
+    catGrid.innerHTML = '';
+    CATEGORIES.forEach(cat => {
+      const items = cat.itemIds.map(id => ITEMS.find(it => it.id === id)).filter(Boolean);
+      const itemNames = items.map(it => it.name).join(' / ');
+      const card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'cat-card' + (cat.free ? ' cat-card-free' : '');
+      card.innerHTML =
+        '<div class="cat-card-top">' +
+          '<span class="cat-card-emoji">' + cat.emoji + '</span>' +
+          '<span class="cat-card-count">' + items.length + '品目</span>' +
+        '</div>' +
+        '<h3 class="cat-card-name">' + cat.name + '</h3>' +
+        '<div class="cat-card-price">' + cat.priceRange + '</div>' +
+        '<p class="cat-card-items">' + itemNames + '</p>' +
+        '<span class="cat-card-cta">タップで詳細を見る →</span>';
+      card.onclick = () => openCategoryModal(cat.id);
+      catGrid.appendChild(card);
+    });
+  }
+  renderCategories();
+
+  // ---------- Items table (collapsible) ----------
+  const itemsTable = document.getElementById('itemsTable');
+  function renderItemsTable(query) {
+    if (!itemsTable) return;
+    const q = (query || '').trim().toLowerCase();
     const visible = ITEMS.filter(it => {
-      if (filter === 'free') return it.free;
-      if (filter !== 'all' && it.category !== filter) return false;
-      if (q) {
-        const hay = (it.name + ' ' + it.desc + ' ' + it.category + ' ' + (it.subitems||[]).map(s=>s.label+s.desc).join(' ')).toLowerCase();
-        if (!hay.includes(q)) return false;
-      }
-      return true;
+      if (!q) return true;
+      const hay = (it.name + ' ' + it.desc + ' ' + it.category + ' ' + (it.subitems||[]).map(s=>s.label+s.desc).join(' ')).toLowerCase();
+      return hay.includes(q);
     });
     if (visible.length === 0) {
-      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:#888;font-size:13px">該当する品目が見つかりません</div>';
+      itemsTable.innerHTML = '<tbody><tr><td colspan="3" style="text-align:center;padding:24px;color:#888;">該当なし</td></tr></tbody>';
       return;
     }
+    let html = '<thead><tr><th>カテゴリ</th><th>品目</th><th>単価</th></tr></thead><tbody>';
     visible.forEach(it => {
-      const card = document.createElement('button');
-      card.className = 'item' + (it.free ? ' item-free' : '');
-      const imgHtml = it.image
-        ? '<img src="' + it.image + '" alt="' + it.name + '" style="width:100%;height:100%;object-fit:cover;" loading="lazy">'
-        : '<span class="ph-label">' + it.phLabel + '</span>';
-      card.innerHTML =
-        '<div class="item-img">' + imgHtml + '</div>' +
-        '<div class="item-body">' +
-          '<div class="item-name">' + it.name + '</div>' +
-          '<div class="item-price">' + it.priceLabel + '</div>' +
-          '<div class="item-tap">タップで詳細 →</div>' +
-        '</div>';
-      card.onclick = function() { openModal(it.id); };
-      grid.appendChild(card);
+      const cat = CATEGORIES.find(c => c.itemIds.includes(it.id));
+      const catLabel = cat ? cat.name : it.category;
+      html += '<tr data-cat="' + (cat ? cat.id : '') + '">' +
+        '<td><span class="items-table-cat">' + catLabel + '</span></td>' +
+        '<td><strong>' + it.name + '</strong></td>' +
+        '<td class="items-table-price">' + it.priceLabel + '</td>' +
+      '</tr>';
+    });
+    html += '</tbody>';
+    itemsTable.innerHTML = html;
+    itemsTable.querySelectorAll('tbody tr[data-cat]').forEach(row => {
+      const catId = row.dataset.cat;
+      if (!catId) return;
+      row.style.cursor = 'pointer';
+      row.addEventListener('click', () => openCategoryModal(catId));
     });
   }
-  renderItems();
+  renderItemsTable();
 
-  // ---------- Filter + search listeners ----------
-  let currentFilter = 'all';
-  let currentQuery = '';
-  document.querySelectorAll('.chip[data-filter]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.chip[data-filter]').forEach(b => b.classList.remove('chip-active'));
-      btn.classList.add('chip-active');
-      currentFilter = btn.dataset.filter;
-      renderItems(currentFilter, currentQuery);
-    });
-  });
   const searchInput = document.getElementById('itemSearch');
   if (searchInput) {
-    searchInput.addEventListener('input', e => {
-      currentQuery = e.target.value;
-      renderItems(currentFilter, currentQuery);
-    });
+    searchInput.addEventListener('input', e => renderItemsTable(e.target.value));
   }
 
-  // ---------- Modal with carousel ----------
+  // ---------- Category modal ----------
   const modal = document.getElementById('modal');
-  const modalImg = document.getElementById("modalImg");
-  const modalImgLabel = document.getElementById("modalImgLabel");
-  const modalName = document.getElementById('modalName');
-  const modalPrice = document.getElementById('modalPrice');
-  const modalTag = document.getElementById('modalTag');
-  const modalDesc = document.getElementById('modalDesc');
-  const modalNote = document.getElementById('modalNote');
+  const catModalEyebrow = document.getElementById('catModalEyebrow');
+  const catModalTitle = document.getElementById('catModalTitle');
+  const catModalSummary = document.getElementById('catModalSummary');
+  const catModalBody = document.getElementById('catModalBody');
 
-  let currentItem = null;
-  let currentSlide = 0;
-
-  function showSlide(idx) {
-    if (!currentItem) return;
-    const subs = currentItem.subitems || [];
-    if (subs.length === 0) return;
-    currentSlide = ((idx % subs.length) + subs.length) % subs.length;
-    const s = subs[currentSlide];
-    if (modalImg) {
-      if (s.image) {
-        modalImg.innerHTML = '<img src="' + s.image + '" alt="' + (s.label || currentItem.name) + '" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;">';
-      } else {
-        modalImg.innerHTML = '<div class="ph-label">PHOTO · ' + (s.label || currentItem.phLabel) + '</div>';
-      }
-    }
-    if (modalDesc) modalDesc.textContent = s.desc || currentItem.desc;
-    if (modalNote) {
-      modalNote.textContent = s.note || '';
-      modalNote.style.display = (s.note || '').trim() ? '' : 'none';
-    }
-    updateDots();
+  function escapeHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
-  function updateDots() {
-    if (!modalImg) return;
-    const imgHolder = modalImg;
-    if (!imgHolder) return;
-    let dotsWrap = document.getElementById('modalDots');
-    if (!dotsWrap) {
-      dotsWrap = document.createElement('div');
-      dotsWrap.id = 'modalDots';
-      dotsWrap.style.cssText = 'display:flex;justify-content:center;gap:6px;padding:8px 0;position:absolute;bottom:8px;left:0;right:0;z-index:2;';
-      imgHolder.style.position = 'relative';
-      imgHolder.appendChild(dotsWrap);
-    }
-    const subs = (currentItem && currentItem.subitems) || [];
-    dotsWrap.innerHTML = '';
-    if (subs.length <= 1) { dotsWrap.style.display = 'none'; return; }
-    dotsWrap.style.display = 'flex';
-    subs.forEach((_, i) => {
-      const d = document.createElement('button');
-      d.type = 'button';
-      d.style.cssText = 'width:8px;height:8px;border-radius:50%;border:none;cursor:pointer;background:' + (i===currentSlide?'#fff':'rgba(255,255,255,.5)') + ';padding:0;';
-      d.onclick = function() { showSlide(i); };
-      dotsWrap.appendChild(d);
-    });
-    // Arrows
-    let prevArrow = document.getElementById('modalPrev');
-    let nextArrow = document.getElementById('modalNext');
-    if (!prevArrow) {
-      prevArrow = document.createElement('button');
-      prevArrow.id = 'modalPrev';
-      prevArrow.innerHTML = '‹';
-      prevArrow.style.cssText = 'position:absolute;left:8px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.5);color:#fff;border:none;width:36px;height:36px;border-radius:50%;font-size:20px;cursor:pointer;z-index:2;';
-      prevArrow.onclick = function(e) { e.stopPropagation(); showSlide(currentSlide - 1); };
-      imgHolder.appendChild(prevArrow);
-      nextArrow = document.createElement('button');
-      nextArrow.id = 'modalNext';
-      nextArrow.innerHTML = '›';
-      nextArrow.style.cssText = 'position:absolute;right:8px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.5);color:#fff;border:none;width:36px;height:36px;border-radius:50%;font-size:20px;cursor:pointer;z-index:2;';
-      nextArrow.onclick = function(e) { e.stopPropagation(); showSlide(currentSlide + 1); };
-      imgHolder.appendChild(nextArrow);
-    }
-    prevArrow.style.display = subs.length > 1 ? '' : 'none';
-    nextArrow.style.display = subs.length > 1 ? '' : 'none';
+  function renderItemBlock(it) {
+    const subs = it.subitems || [];
+    const subsHtml = subs.length ? subs.map(s => {
+      const imgHtml = s.image
+        ? '<img src="' + s.image + '" alt="' + escapeHtml(s.label || it.name) + '" loading="lazy">'
+        : '<span class="ph-label">PHOTO · ' + escapeHtml(s.label || it.phLabel) + '</span>';
+      const noteHtml = (s.note || '').trim() ? '<div class="cat-modal-note">' + escapeHtml(s.note) + '</div>' : '';
+      const descHtml = (s.desc || '').trim() ? '<p class="cat-modal-subdesc">' + escapeHtml(s.desc) + '</p>' : '';
+      return '<div class="cat-modal-sub">' +
+        '<div class="cat-modal-sub-img">' + imgHtml + '</div>' +
+        '<div class="cat-modal-sub-body">' +
+          '<div class="cat-modal-sub-label">' + escapeHtml(s.label || it.name) + '</div>' +
+          descHtml + noteHtml +
+        '</div>' +
+      '</div>';
+    }).join('') : '';
+    return '<section class="cat-modal-item">' +
+      '<header class="cat-modal-item-head">' +
+        '<h4>' + escapeHtml(it.name) + '</h4>' +
+        '<span class="cat-modal-item-price">' + escapeHtml(it.priceLabel) + '</span>' +
+      '</header>' +
+      (subsHtml ? '<div class="cat-modal-subs">' + subsHtml + '</div>' : '') +
+    '</section>';
   }
 
-  function openModal(id) {
-    const it = ITEMS.find(x => x.id === id);
-    if (!it) return;
-    currentItem = it;
-    currentSlide = 0;
-    if (modalName) modalName.textContent = it.name;
-    if (modalPrice) modalPrice.textContent = it.priceLabel;
-    if (modalTag) modalTag.textContent = it.category;
-    showSlide(0);
+  function openCategoryModal(catId) {
+    const cat = CATEGORIES.find(c => c.id === catId);
+    if (!cat) return;
+    const items = cat.itemIds.map(id => ITEMS.find(it => it.id === id)).filter(Boolean);
+    if (catModalEyebrow) catModalEyebrow.textContent = cat.priceRange;
+    if (catModalTitle) catModalTitle.textContent = cat.emoji + ' ' + cat.name;
+    if (catModalSummary) catModalSummary.textContent = cat.summary + '（' + items.length + '品目）';
+    if (catModalBody) {
+      catModalBody.innerHTML = items.map(renderItemBlock).join('');
+    }
     if (modal) {
       modal.classList.add('open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
+      const inner = modal.querySelector('.cat-modal');
+      if (inner) inner.scrollTop = 0;
     }
   }
+
   function closeModal() {
     if (!modal) return;
     modal.classList.remove('open');
@@ -209,10 +213,6 @@
   if (modal) modal.onclick = e => { if (e.target === modal) closeModal(); };
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeModal();
-    if (modal && modal.classList.contains('open')) {
-      if (e.key === 'ArrowLeft') showSlide(currentSlide - 1);
-      if (e.key === 'ArrowRight') showSlide(currentSlide + 1);
-    }
   });
 
   // ---------- Simulator ----------
