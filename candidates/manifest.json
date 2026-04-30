@@ -562,6 +562,15 @@
       "subcategory": "ロープ",
       "description": "麻製ロープ",
       "suitable_for": []
+    },
+    {
+      "file": "ラップ.jpg",
+      "category": "対応品目",
+      "subcategory": "軟プラ",
+      "description": "使用済みラップ系廃プラ",
+      "suitable_for": [
+        "item-wrap"
+      ]
     }
   ]
 }
