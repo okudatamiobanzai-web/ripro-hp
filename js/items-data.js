@@ -14,17 +14,17 @@ window.RIPRO_ITEMS = [
         "note": "ラップでネットや緩い紐を包まないようにお願いします。ラップを丸めて縛ることもやめてください。"
       },
       {
-        "image": "candidates/防水シート_01.jpeg",
+        "image": "candidates/ブルーシート4.jpg",
         "label": "ブルーシート",
         "desc": "使用済みのブルーシート・防水シート。サイズが大きい場合は2×10m程度に切断してお出しいただけると回収がスムーズです。"
       },
       {
-        "image": "candidates/フレコン袋_01.jpeg",
+        "image": "candidates/フレコンバック.jpg",
         "label": "フレコンバッグ",
         "desc": "肥料・飼料・ペレット等で使用したフレコンバッグ。中身を空にしてお出しください。複数枚は重ねて畳むと省スペースです。"
       },
       {
-        "image": "candidates/軟プラ小物_01.jpeg",
+        "image": "candidates/紙プラ.jpg",
         "label": "紙プラ",
         "desc": "袋内側に防水フィルムがあるものは紙ではなく、プラスチック類となります。",
         "note": "紙プラは他のものとは別にしてください。単体で袋詰めをお願いします。"
@@ -39,22 +39,22 @@ window.RIPRO_ITEMS = [
     "free": false,
     "subitems": [
       {
-        "image": "assets/placeholder.svg",
+        "image": "candidates/バケツ、ポリ容器.jpg",
         "label": "バケツ、ポリ容器",
         "desc": ""
       },
       {
-        "image": "assets/placeholder.svg",
+        "image": "candidates/硬プラ_01.jpeg",
         "label": "デッピングタンク",
         "desc": ""
       },
       {
-        "image": "assets/placeholder.svg",
+        "image": "candidates/プラ容器類.jpg",
         "label": "プラ容器類",
         "desc": ""
       },
       {
-        "image": "assets/placeholder.svg",
+        "image": "candidates/プラスチックスコップ.jpg",
         "label": "プラスチックスコップ",
         "desc": "",
         "note": "スコップの柄が木製または鉄製の部分がある場合は取り外してください。取り外していないものは混合廃棄物となります。"
@@ -69,22 +69,22 @@ window.RIPRO_ITEMS = [
     "free": false,
     "subitems": [
       {
-        "image": "candidates/塩ビ類_01.jpeg",
+        "image": "candidates/作業用前掛け.jpg",
         "label": "作業用前掛け",
         "desc": "",
         "note": "塩ビ系（塩ビ管、塩ビシート等）は単体で袋詰めしてください。他のものとの混入はできません。"
       },
       {
-        "image": "assets/placeholder.svg",
+        "image": "candidates/塩ビパイプ.jpg",
         "label": "塩ビパイプ",
         "desc": "",
-        "note": "塩ビ系（塩ビ管、塩ビシート等）は単体で袋詰めしてください。他のものとの混入はできません。"
+        "note": "塩ビ系（塩ビ管、塩ビシート等)は単体で袋詰めしてください。他のものとの混入はできません。"
       },
       {
-        "image": "assets/placeholder.svg",
+        "image": "candidates/塩ビシート.jpg",
         "label": "塩ビシート",
         "desc": "",
-        "note": "塩ビ系（塩ビ管、塩ビシート等）は単体で袋詰めしてください。他のものとの混入はできません。"
+        "note": "塩ビ系（塩ビ管、塩ビシート等)は単体で袋詰めしてください。他のものとの混入はできません。"
       }
     ]
   },
@@ -96,13 +96,13 @@ window.RIPRO_ITEMS = [
     "free": false,
     "subitems": [
       {
-        "image": "candidates/木製パレット_01.jpeg",
+        "image": "candidates/木製パレット.jpg",
         "label": "木製パレット・梱包用木材",
         "desc": "",
         "note": "防腐剤、コールタール付き木材は混合廃棄物になります。他の木くずとは別に仕分けしてください。"
       },
       {
-        "image": "candidates/竹ほうき_01.jpeg",
+        "image": "candidates/たけ箒.jpg",
         "label": "竹ほうき",
         "desc": "",
         "note": "防腐剤、コールタール付き木材は混合廃棄物になります。他の木くずとは別に仕分けしてください。"
@@ -117,13 +117,13 @@ window.RIPRO_ITEMS = [
     "free": false,
     "subitems": [
       {
-        "image": "assets/placeholder.svg",
+        "image": "candidates/FRP製一輪車.png",
         "label": "FRP製一輪車",
         "desc": "",
         "note": "取手の部分の鉄、タイヤは極力取り外してください。取り外しされていない物も回収いたしますが総重量にて計測し、FRP価格でご請求させて頂きますのでご了承ください。"
       },
       {
-        "image": "assets/placeholder.svg",
+        "image": "candidates/子牛用ハッチ.png",
         "label": "子牛用ハッチ",
         "desc": "",
         "note": "FRP系の廃棄物は単体で袋詰めをお願いします。他素材のものとの混入はできません。"
@@ -138,13 +138,13 @@ window.RIPRO_ITEMS = [
     "free": false,
     "subitems": [
       {
-        "image": "assets/placeholder.svg",
+        "image": "candidates/発泡スチロール.png",
         "label": "発泡スチロール",
         "desc": "",
         "note": "それぞれ単体で袋詰めしてください。"
       },
       {
-        "image": "candidates/スタイロ_スレート_01.jpeg",
+        "image": "candidates/スタイロフォーム.png",
         "label": "スタイロフォーム",
         "desc": "",
         "note": "それぞれ単体で袋詰めしてください。"
@@ -159,37 +159,37 @@ window.RIPRO_ITEMS = [
     "free": false,
     "subitems": [
       {
-        "image": "candidates/革ベルト_01.jpeg",
+        "image": "candidates/皮バンド.jpg",
         "label": "革バンド",
         "desc": "",
         "note": "品目問わず複数混入しているものは混合廃棄物となります。塩ビ類、スタイロフォームは混合廃棄物にも混入できません。"
       },
       {
-        "image": "assets/placeholder.svg",
+        "image": "candidates/ブラシ.jpg",
         "label": "ブラシ",
         "desc": "",
         "note": "品目問わず複数混入しているものは混合廃棄物となります。塩ビ類、スタイロフォームは混合廃棄物にも混入できません。"
       },
       {
-        "image": "assets/placeholder.svg",
+        "image": "candidates/麻ロープ.jpg",
         "label": "麻ロープ",
         "desc": "",
         "note": "ビニール系のロープは軟プラとなります"
       },
       {
-        "image": "assets/placeholder.svg",
+        "image": "candidates/電牧ロープ.jpg",
         "label": "電牧ロープ",
         "desc": "",
         "note": "品目問わず複数混入しているものは混合廃棄物となります。塩ビ類、スタイロフォームは混合廃棄物にも混入できません。"
       },
       {
-        "image": "assets/placeholder.svg",
+        "image": "candidates/乳紙フィルター.jpg",
         "label": "乳紙フィルター",
         "desc": "",
         "note": "品目問わず複数混入しているものは混合廃棄物となります。塩ビ類、スタイロフォームは混合廃棄物にも混入できません。"
       },
       {
-        "image": "assets/placeholder.svg",
+        "image": "candidates/使用済み牛床マット.jpg",
         "label": "使用済牛床マット",
         "desc": "",
         "note": "未使用はゴムとなります。"
@@ -204,17 +204,17 @@ window.RIPRO_ITEMS = [
     "free": false,
     "subitems": [
       {
-        "image": "candidates/ホース_01.jpeg",
+        "image": "candidates/ライナーゴム.jpg",
         "label": "ライナーゴム",
         "desc": ""
       },
       {
-        "image": "candidates/ゴム手袋_01.jpeg",
+        "image": "candidates/ゴム手袋.png",
         "label": "ゴム手袋",
         "desc": ""
       },
       {
-        "image": "candidates/ゴム長靴_01.jpeg",
+        "image": "candidates/長靴.png",
         "label": "長靴",
         "desc": ""
       },
@@ -224,13 +224,13 @@ window.RIPRO_ITEMS = [
         "desc": ""
       },
       {
-        "image": "candidates/ホース_02.jpeg",
+        "image": "candidates/シリコンホース.png",
         "label": "シリコンホース",
         "desc": "",
         "note": "ホースに金具がついているものは混合廃棄物となります。ゴム素材単体で袋詰めしてください。"
       },
       {
-        "image": "candidates/ホース_03.jpeg",
+        "image": "candidates/ゴムホース.png",
         "label": "ゴムホース",
         "desc": "",
         "note": "ホースに金具がついているものは混合廃棄物となります。ゴム素材単体で袋詰めしてください。"
