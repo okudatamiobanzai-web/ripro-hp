@@ -117,13 +117,13 @@ window.RIPRO_ITEMS = [
     "free": false,
     "subitems": [
       {
-        "image": "candidates/FRP製一輪車.png",
+        "image": "candidates/FRP製一輪車.jpg",
         "label": "FRP製一輪車",
         "desc": "",
         "note": "取手の部分の鉄、タイヤは極力取り外してください。取り外しされていない物も回収いたしますが総重量にて計測し、FRP価格でご請求させて頂きますのでご了承ください。"
       },
       {
-        "image": "candidates/子牛用ハッチ.png",
+        "image": "candidates/子牛用ハッチ.jpg",
         "label": "子牛用ハッチ",
         "desc": "",
         "note": "FRP系の廃棄物は単体で袋詰めをお願いします。他素材のものとの混入はできません。"
@@ -138,13 +138,13 @@ window.RIPRO_ITEMS = [
     "free": false,
     "subitems": [
       {
-        "image": "candidates/発泡スチロール.png",
+        "image": "candidates/発泡スチロール.jpg",
         "label": "発泡スチロール",
         "desc": "",
         "note": "それぞれ単体で袋詰めしてください。"
       },
       {
-        "image": "candidates/スタイロフォーム.png",
+        "image": "candidates/スタイロフォーム.jpg",
         "label": "スタイロフォーム",
         "desc": "",
         "note": "それぞれ単体で袋詰めしてください。"
@@ -214,7 +214,7 @@ window.RIPRO_ITEMS = [
         "desc": ""
       },
       {
-        "image": "candidates/長靴.png",
+        "image": "candidates/長靴.jpg",
         "label": "長靴",
         "desc": ""
       },
@@ -224,7 +224,7 @@ window.RIPRO_ITEMS = [
         "desc": ""
       },
       {
-        "image": "candidates/シリコンホース.png",
+        "image": "candidates/シリコンホース.jpg",
         "label": "シリコンホース",
         "desc": "",
         "note": "ホースに金具がついているものは混合廃棄物となります。ゴム素材単体で袋詰めしてください。"
