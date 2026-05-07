@@ -608,9 +608,23 @@
       "suitable_for": []
     },
     {
-      "file": "after.png",
+      "file": "after.jpg",
       "category": "対応品目",
       "subcategory": "after",
+      "description": "",
+      "suitable_for": []
+    },
+    {
+      "file": "ゴムホース.jpg",
+      "category": "対応品目",
+      "subcategory": "ゴムホース",
+      "description": "",
+      "suitable_for": []
+    },
+    {
+      "file": "ゴム手袋.jpg",
+      "category": "対応品目",
+      "subcategory": "ゴム手袋",
       "description": "",
       "suitable_for": []
     }
