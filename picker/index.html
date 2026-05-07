@@ -181,12 +181,48 @@
     border: 1px solid #ccc;
     border-radius: 6px;
   }
+
+  /* Upload drop zone (local dev only) */
+  .upload-zone {
+    border: 2px dashed #1f7a3a;
+    background: #f0fdf4;
+    border-radius: 8px;
+    padding: 18px;
+    text-align: center;
+    margin-bottom: 16px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .upload-zone.drag-over { background: #dcfce7; border-color: #15803d; }
+  .upload-zone .uz-title { font-weight: 600; color: #1f7a3a; }
+  .upload-zone .uz-sub { font-size: 12px; color: #555; margin-top: 4px; }
+  .upload-log {
+    font-size: 12px;
+    margin-top: 8px;
+    max-height: 120px;
+    overflow-y: auto;
+    text-align: left;
+    background: #fff;
+    border-radius: 4px;
+    padding: 6px 8px;
+    display: none;
+  }
+  .upload-log.has-content { display: block; }
+  .upload-log .ok { color: #1f7a3a; }
+  .upload-log .err { color: #b22; }
 </style>
 </head>
 <body>
 
 <h1>RiPRO 画像ピッカー</h1>
 <div class="sub">candidates/ の画像を各スロットに割り当てる。アイテム枠は複数のサブアイテム（ラベル・説明付き）を登録可能。</div>
+
+<div class="upload-zone" id="upload-zone" style="display:none;">
+  <div class="uz-title">📥 画像をアップロード</div>
+  <div class="uz-sub">ここにドラッグ＆ドロップ、またはクリックしてファイル選択<br>（複数同時OK・PNG/JPG/JPEG/WEBP/GIF）</div>
+  <input type="file" id="upload-input" accept="image/*" multiple style="display:none;">
+  <div class="upload-log" id="upload-log"></div>
+</div>
 
 <div class="toolbar">
   <button class="primary" id="btn-export">JSON出力</button>
@@ -680,6 +716,78 @@ document.getElementById('btn-reset').onclick = () => {
   state = defaultState();
   render();
 };
+
+// === Upload (local dev server only) ===
+// picker-server.mjs 経由で起動されているときだけドロップゾーンを表示
+const isLocalDev = ['localhost', '127.0.0.1'].includes(location.hostname);
+const uploadZone = document.getElementById('upload-zone');
+const uploadInput = document.getElementById('upload-input');
+const uploadLog = document.getElementById('upload-log');
+
+if (isLocalDev) {
+  uploadZone.style.display = 'block';
+  uploadZone.onclick = () => uploadInput.click();
+  uploadInput.onchange = (e) => handleFiles([...e.target.files]);
+
+  ['dragenter', 'dragover'].forEach(evt => {
+    uploadZone.addEventListener(evt, (e) => {
+      e.preventDefault();
+      uploadZone.classList.add('drag-over');
+    });
+  });
+  ['dragleave', 'drop'].forEach(evt => {
+    uploadZone.addEventListener(evt, (e) => {
+      e.preventDefault();
+      uploadZone.classList.remove('drag-over');
+    });
+  });
+  uploadZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    const files = [...(e.dataTransfer?.files || [])].filter(f => f.type.startsWith('image/'));
+    if (files.length) handleFiles(files);
+  });
+}
+
+function logLine(msg, kind = 'ok') {
+  uploadLog.classList.add('has-content');
+  const div = document.createElement('div');
+  div.className = kind;
+  div.textContent = msg;
+  uploadLog.appendChild(div);
+  uploadLog.scrollTop = uploadLog.scrollHeight;
+}
+
+async function handleFiles(files) {
+  for (const file of files) {
+    // subcategory を1ファイルずつ手入力
+    const defaultSub = file.name.replace(/\.[^.]+$/, '').replace(/_\d+$/, '');
+    const sub = prompt(`「${file.name}」の subcategory（分類ラベル）を入力\n例: 廃タイヤ, 段ボール, 八木社長 など`, defaultSub);
+    if (sub === null) {
+      logLine(`スキップ: ${file.name}`, 'err');
+      continue;
+    }
+    try {
+      const res = await fetch('/upload', {
+        method: 'POST',
+        headers: {
+          'Content-Type': file.type || 'application/octet-stream',
+          'X-Filename': encodeURIComponent(file.name),
+          'X-Subcategory': encodeURIComponent(sub),
+        },
+        body: file,
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || res.statusText);
+      const renamedNote = json.renamed ? ` (→ ${json.file} に自動リネーム)` : '';
+      logLine(`✓ ${file.name} → ${sub}${renamedNote}`, 'ok');
+    } catch (err) {
+      logLine(`✗ ${file.name}: ${err.message}`, 'err');
+    }
+  }
+  // candidatesを再読込してピッカーに即反映
+  await loadCandidates();
+  flash(`画像プールを更新しました（${candidates.length}枚）`);
+}
 
 // init
 (async function init() {

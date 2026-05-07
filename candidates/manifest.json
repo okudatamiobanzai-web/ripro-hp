@@ -571,6 +571,48 @@
       "suitable_for": [
         "item-wrap"
       ]
+    },
+    {
+      "file": "ラップ_2.jpg",
+      "category": "対応品目",
+      "subcategory": "ラップ1",
+      "description": "",
+      "suitable_for": []
+    },
+    {
+      "file": "金属クズ.jpg",
+      "category": "対応品目",
+      "subcategory": "金属クズ",
+      "description": "",
+      "suitable_for": []
+    },
+    {
+      "file": "廃自動車.jpg",
+      "category": "対応品目",
+      "subcategory": "廃自動車",
+      "description": "",
+      "suitable_for": []
+    },
+    {
+      "file": "廃農機具.jpg",
+      "category": "対応品目",
+      "subcategory": "廃農機具",
+      "description": "",
+      "suitable_for": []
+    },
+    {
+      "file": "ヒーロー.jpg",
+      "category": "対応品目",
+      "subcategory": "ヒーロー",
+      "description": "",
+      "suitable_for": []
+    },
+    {
+      "file": "after.png",
+      "category": "対応品目",
+      "subcategory": "after",
+      "description": "",
+      "suitable_for": []
     }
   ]
 }
