@@ -572,6 +572,17 @@ body[data-palette="dark"] .merit-num { color: var(--brand-lt); opacity:.4; }
 .ba-tag {
   font-family: var(--ff-en); font-weight:800; font-size: 11px; letter-spacing: .15em;
   padding: 6px 10px; margin: 10px; border-radius: 4px;
+  position: relative; z-index: 1;
+}
+/* 単一スロット画像（merit / cleanup before/after / about-portrait）を枠いっぱいに表示 */
+.merit-visual > img,
+.ba-before > img,
+.ba-after > img,
+.about-portrait > img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  z-index: 0;
 }
 .ba-tag-before { background: rgba(0,0,0,.6); color: #fff; }
 .ba-tag-after { background: var(--brand); color: #fff; }
