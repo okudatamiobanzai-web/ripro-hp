@@ -188,7 +188,7 @@
     if (!cat) return;
     const items = cat.itemIds.map(id => ITEMS.find(it => it.id === id)).filter(Boolean);
     if (catModalEyebrow) catModalEyebrow.textContent = cat.priceRange;
-    if (catModalTitle) catModalTitle.textContent = cat.emoji + ' ' + cat.name;
+    if (catModalTitle) catModalTitle.textContent = cat.name;
     if (catModalSummary) catModalSummary.textContent = cat.summary + '（' + items.length + '品目）';
     if (catModalBody) {
       catModalBody.innerHTML = items.map(renderItemBlock).join('');

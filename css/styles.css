@@ -346,7 +346,7 @@ body.drawer-open .nav-drawer { transform: translateX(0); }
 /* ---------- HERO (full-bleed image) ---------- */
 .hero {
   position: relative;
-  min-height: clamp(560px, 88vh, 820px);
+  min-height: clamp(480px, 72vh, 700px);
   overflow: hidden;
   background: var(--brand-dk);
 }
@@ -476,8 +476,8 @@ body[data-hero="split"] .hero-scrim { background: none; }
 body[data-hero="split"] .btn-ghost { color: var(--ink); border-color: var(--line); background: #fff; }
 
 @media (max-width: 860px) {
-  .hero { min-height: clamp(520px, 80vh, 680px); }
-  .hero-body { padding: 0 22px 44px; }
+  .hero { min-height: clamp(440px, 62vh, 560px); }
+  .hero-body { padding: 0 22px 36px; }
   .hero-scroll { display: none; }
   .hero-badge {
     top: clamp(72px, 18vw, 96px);
