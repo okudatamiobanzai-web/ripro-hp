@@ -2,6 +2,51 @@
    RiPRO LP — App script (items-data.js駆動版)
    ================================================================ */
 (function() {
+  // Nav: transparent over hero, solid after scroll + scroll progress bar
+  const navEl = document.getElementById('nav');
+  const progressEl = document.getElementById('scrollProgress');
+  const updateScroll = () => {
+    const y = window.scrollY;
+    if (navEl) {
+      if (y > 40) navEl.classList.add('nav-scrolled');
+      else navEl.classList.remove('nav-scrolled');
+    }
+    if (progressEl) {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = max > 0 ? Math.min(1, y / max) : 0;
+      progressEl.style.transform = `scaleX(${pct})`;
+    }
+  };
+  updateScroll();
+  window.addEventListener('scroll', updateScroll, { passive: true });
+  window.addEventListener('resize', updateScroll, { passive: true });
+
+  // Mobile drawer
+  const burger = document.getElementById('navBurger');
+  const drawer = document.getElementById('navDrawer');
+  const backdrop = document.getElementById('navBackdrop');
+  const drawerClose = document.getElementById('navDrawerClose');
+  const openDrawer = () => {
+    document.body.classList.add('drawer-open');
+    burger?.setAttribute('aria-expanded', 'true');
+    drawer?.setAttribute('aria-hidden', 'false');
+  };
+  const closeDrawer = () => {
+    document.body.classList.remove('drawer-open');
+    burger?.setAttribute('aria-expanded', 'false');
+    drawer?.setAttribute('aria-hidden', 'true');
+  };
+  burger?.addEventListener('click', () => {
+    if (document.body.classList.contains('drawer-open')) closeDrawer();
+    else openDrawer();
+  });
+  drawerClose?.addEventListener('click', closeDrawer);
+  backdrop?.addEventListener('click', closeDrawer);
+  drawer?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.body.classList.contains('drawer-open')) closeDrawer();
+  });
+
   const ITEMS = (window.RIPRO_ITEMS || []).map(it => {
     const firstSub = (it.subitems && it.subitems[0]) || {};
     const priceStr = it.price || '';
@@ -22,59 +67,8 @@
     };
   });
 
-  // ---------- Categories (groupings of ITEMS) ----------
-  const CATEGORIES = [
-    {
-      id: 'cat-plastic',
-      emoji: '🧴',
-      name: 'プラスチック類',
-      summary: 'ラップ、硬プラ、塩ビ系シート/パイプ',
-      priceRange: '¥66〜132 / kg',
-      itemIds: ['item-wrap', 'item-tire', 'item-hardplastic'],
-    },
-    {
-      id: 'cat-rubber',
-      emoji: '🛞',
-      name: 'ゴム・タイヤ',
-      summary: 'タイヤ各種、ゴム類',
-      priceRange: '¥99〜132 / kg',
-      itemIds: ['item-metal', 'item-tires'],
-    },
-    {
-      id: 'cat-wood',
-      emoji: '📦',
-      name: '木材・紙類',
-      summary: '木製パレット、段ボールなど',
-      priceRange: '0円回収〜¥66 / kg',
-      itemIds: ['item-rubber', 'item-paper'],
-      free: true,
-    },
-    {
-      id: 'cat-foam',
-      emoji: '🧩',
-      name: '発泡・FRP',
-      summary: '発泡スチロール、子牛用ハッチ等',
-      priceRange: '¥132〜330 / kg',
-      itemIds: ['item-vinyl', 'item-wood'],
-    },
-    {
-      id: 'cat-mixed',
-      emoji: '🗑',
-      name: '混合・家電',
-      summary: '混合廃棄物、家電製品',
-      priceRange: '¥132〜 / 個別お見積り',
-      itemIds: ['item-foam', 'item-appliance'],
-    },
-    {
-      id: 'cat-metal',
-      emoji: '⚙️',
-      name: '金属・機械',
-      summary: '金属くず、機械部品',
-      priceRange: '0円回収〜有価買取',
-      itemIds: ['item-mixed', 'item-machine'],
-      free: true,
-    },
-  ];
+  // ---------- Categories (loaded from categories-data.js) ----------
+  const CATEGORIES = window.RIPRO_CATEGORIES || [];
 
   // ---------- Category cards rendering ----------
   const catGrid = document.getElementById('categoriesGrid');
@@ -87,15 +81,21 @@
       const card = document.createElement('button');
       card.type = 'button';
       card.className = 'cat-card' + (cat.free ? ' cat-card-free' : '');
+      const img = cat.image ? '<img class="cat-card-img" src="' + cat.image + '" alt="' + cat.name + '" loading="lazy">' : '';
+      const freeBadge = cat.free ? '<span class="cat-card-badge-free">0円回収あり</span>' : '<span></span>';
       card.innerHTML =
+        img +
+        '<div class="cat-card-scrim"></div>' +
         '<div class="cat-card-top">' +
-          '<span class="cat-card-emoji">' + cat.emoji + '</span>' +
+          freeBadge +
           '<span class="cat-card-count">' + items.length + '品目</span>' +
         '</div>' +
-        '<h3 class="cat-card-name">' + cat.name + '</h3>' +
-        '<div class="cat-card-price">' + cat.priceRange + '</div>' +
-        '<p class="cat-card-items">' + itemNames + '</p>' +
-        '<span class="cat-card-cta">タップで詳細を見る →</span>';
+        '<div class="cat-card-body">' +
+          '<h3 class="cat-card-name">' + cat.name + '</h3>' +
+          '<div class="cat-card-price">' + cat.priceRange + '</div>' +
+          '<p class="cat-card-items">' + itemNames + '</p>' +
+          '<span class="cat-card-cta">詳細を見る →</span>' +
+        '</div>';
       card.onclick = () => openCategoryModal(cat.id);
       catGrid.appendChild(card);
     });

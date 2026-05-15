@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mock D：写真フル背景カード｜RiPRO</title>
+<style>
+  :root {
+    --brand: #2a7a3d;
+    --brand-dark: #1f5c2d;
+    --accent: #d9542b;
+    --ink: #1a1d1b;
+    --paper: #fafaf7;
+    --gray-2: #e9ebe9;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Hiragino Sans", "Yu Gothic", sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.6;
+  }
+  .topbar {
+    padding: 12px 24px;
+    background: #fff;
+    border-bottom: 1px solid var(--gray-2);
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    font-size: 13px;
+  }
+  .topbar a { color: var(--brand); text-decoration: none; font-weight: 600; }
+  .topbar a + a { margin-left: 8px; }
+  .topbar-tag {
+    padding: 3px 10px;
+    background: var(--brand);
+    color: #fff;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 11px;
+  }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 48px 24px 80px; }
+  .sec-head { text-align: center; margin-bottom: 40px; }
+  .sec-eyebrow {
+    color: var(--brand);
+    font-weight: 700;
+    letter-spacing: .18em;
+    font-size: 13px;
+    margin: 0 0 8px;
+  }
+  .sec-title { font-size: 32px; margin: 0 0 12px; letter-spacing: .02em; }
+  .sec-desc { color: #555; margin: 0; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 880px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  .cat {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 5;
+    border-radius: 18px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #222;
+    color: #fff;
+    text-align: left;
+    border: none;
+    padding: 0;
+    box-shadow: 0 4px 16px rgba(0,0,0,.08);
+    transition: transform .3s ease, box-shadow .3s ease;
+  }
+  .cat:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0,0,0,.18);
+  }
+  .cat-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .6s ease;
+  }
+  .cat:hover .cat-img { transform: scale(1.06); }
+
+  .cat-scrim {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.45) 40%, rgba(0,0,0,.05) 70%, rgba(0,0,0,0) 100%);
+  }
+
+  .cat-top {
+    position: absolute; top: 16px; left: 16px; right: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+  }
+  .cat-count {
+    padding: 4px 10px;
+    background: rgba(255,255,255,.92);
+    color: var(--ink);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    backdrop-filter: blur(4px);
+  }
+  .cat-badge-free {
+    padding: 4px 10px;
+    background: var(--brand);
+    color: #fff;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .05em;
+  }
+
+  .cat-body {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 20px 20px 18px;
+    z-index: 2;
+  }
+  .cat-name {
+    font-size: 22px;
+    margin: 0 0 6px;
+    font-weight: 700;
+    letter-spacing: .03em;
+    text-shadow: 0 2px 8px rgba(0,0,0,.4);
+  }
+  .cat-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffd687;
+    margin: 0 0 10px;
+    letter-spacing: .02em;
+    text-shadow: 0 2px 8px rgba(0,0,0,.4);
+  }
+  .cat-price.free { color: #aef0b8; }
+  .cat-items {
+    font-size: 12px;
+    color: rgba(255,255,255,.88);
+    margin: 0 0 12px;
+    line-height: 1.5;
+    text-shadow: 0 1px 4px rgba(0,0,0,.5);
+  }
+  .cat-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    padding: 7px 14px;
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.4);
+    border-radius: 999px;
+    backdrop-filter: blur(4px);
+    transition: background .2s ease;
+  }
+  .cat:hover .cat-cta { background: rgba(255,255,255,.3); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-tag">MOCK D</span>
+  <span>写真フル背景＋テキストオーバーレイ案</span>
+  <span style="flex:1"></span>
+  <a href="index.html">← 本番HPに戻る</a>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-eyebrow">SERVICE</p>
+      <h2 class="sec-title">対応品目と料金</h2>
+      <p class="sec-desc">カードをタップすると詳細と注意事項をご覧いただけます。</p>
+    </div>
+
+    <div class="grid">
+
+      <button type="button" class="cat">
+        <img class="cat-img" src="candidates/ラップフィルム_01.jpeg" alt="プラスチック類">
+        <div class="cat-scrim"></div>
+        <div class="cat-top">
+          <span></span>
+          <span class="cat-count">3品目</span>
+        </div>
+        <div class="cat-body">
+          <h3 class="cat-name">プラスチック類</h3>
+          <div class="cat-price">¥66〜132 / kg</div>
+          <p class="cat-items">ラップ・硬プラ・塩ビ系シート/パイプ</p>
+          <span class="cat-cta">詳細を見る →</span>
+        </div>
+      </button>
+
+      <button type="button" class="cat">
+        <img class="cat-img" src="candidates/ゴムマット_01.jpeg" alt="ゴム・タイヤ">
+        <div class="cat-scrim"></div>
+        <div class="cat-top">
+          <span></span>
+          <span class="cat-count">2品目</span>
+        </div>
+        <div class="cat-body">
+          <h3 class="cat-name">ゴム・タイヤ</h3>
+          <div class="cat-price">¥99〜132 / kg</div>
+          <p class="cat-items">タイヤ各種・ゴム類</p>
+          <span class="cat-cta">詳細を見る →</span>
+        </div>
+      </button>
+
+      <button type="button" class="cat">
+        <img class="cat-img" src="candidates/木製パレット_01.jpeg" alt="木材・紙類">
+        <div class="cat-scrim"></div>
+        <div class="cat-top">
+          <span class="cat-badge-free">0円回収あり</span>
+          <span class="cat-count">2品目</span>
+        </div>
+        <div class="cat-body">
+          <h3 class="cat-name">木材・紙類</h3>
+          <div class="cat-price free">0円回収〜¥66 / kg</div>
+          <p class="cat-items">木製パレット・梱包用木材・段ボール・紙類</p>
+          <span class="cat-cta">詳細を見る →</span>
+        </div>
+      </button>
+
+      <button type="button" class="cat">
+        <img class="cat-img" src="candidates/FRP製一輪車.jpg" alt="発泡・FRP">
+        <div class="cat-scrim"></div>
+        <div class="cat-top">
+          <span></span>
+          <span class="cat-count">2品目</span>
+        </div>
+        <div class="cat-body">
+          <h3 class="cat-name">発泡・FRP</h3>
+          <div class="cat-price">¥132〜330 / kg</div>
+          <p class="cat-items">発泡スチロール・スタイロフォーム・FRP製一輪車・子牛用ハッチ</p>
+          <span class="cat-cta">詳細を見る →</span>
+        </div>
+      </button>
+
+      <button type="button" class="cat">
+        <img class="cat-img" src="candidates/廃自動車.jpg" alt="混合・家電">
+        <div class="cat-scrim"></div>
+        <div class="cat-top">
+          <span></span>
+          <span class="cat-count">2品目</span>
+        </div>
+        <div class="cat-body">
+          <h3 class="cat-name">混合・家電</h3>
+          <div class="cat-price">¥132〜 / 個別お見積り</div>
+          <p class="cat-items">混合廃棄物・家電製品</p>
+          <span class="cat-cta">詳細を見る →</span>
+        </div>
+      </button>
+
+      <button type="button" class="cat">
+        <img class="cat-img" src="candidates/搾乳機部品_01.jpeg" alt="金属・機械">
+        <div class="cat-scrim"></div>
+        <div class="cat-top">
+          <span class="cat-badge-free">0円回収あり</span>
+          <span class="cat-count">2品目</span>
+        </div>
+        <div class="cat-body">
+          <h3 class="cat-name">金属・機械</h3>
+          <div class="cat-price free">0円回収〜有価買取</div>
+          <p class="cat-items">金属くず・機械部品</p>
+          <span class="cat-cta">詳細を見る →</span>
+        </div>
+      </button>
+
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

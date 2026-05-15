@@ -15,9 +15,12 @@
 <link rel="canonical" href="https://okudatamiobanzai-web.github.io/ripro-hp/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/styles.css?v=13">
 </head>
 <body>
+
+<!-- =================== SCROLL PROGRESS BAR =================== -->
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
 <!-- =================== NAV =================== -->
 <header class="nav" id="nav">
@@ -39,17 +42,58 @@
       <a class="nav-tel" href="tel:0153795005">0153-79-5005</a>
     </div>
     <a class="btn-primary nav-btn" href="#contact">お問い合わせ</a>
+    <button class="nav-burger" id="navBurger" aria-label="メニューを開く" aria-expanded="false" aria-controls="navDrawer">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
 </header>
+
+<!-- =================== MOBILE DRAWER =================== -->
+<div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
+<aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="モバイルメニュー">
+  <div class="nav-drawer-head">
+    <span class="nav-drawer-title">MENU</span>
+    <button class="nav-drawer-close" id="navDrawerClose" aria-label="メニューを閉じる">×</button>
+  </div>
+  <nav class="nav-drawer-links">
+    <a href="#problem">お悩み</a>
+    <a href="#merit">メリット</a>
+    <a href="#service">対応品目・料金</a>
+    <a href="#price">料金シミュレーター</a>
+    <a href="#recycle">リサイクル</a>
+    <a href="#flow">ご利用の流れ</a>
+    <a href="#faq">よくあるご質問</a>
+    <a href="#about">会社概要</a>
+  </nav>
+  <div class="nav-drawer-cta">
+    <a class="btn-primary btn-block btn-lg" href="#contact">
+      <span class="btn-icon">✉</span>無料見積りを依頼する
+    </a>
+    <a class="nav-drawer-tel" href="tel:0153795005">
+      <span class="nav-drawer-tel-icon">☎</span>
+      <span>
+        <span class="nav-drawer-tel-label">お電話でのお問い合わせ</span>
+        <span class="nav-drawer-tel-num">0153-79-5005</span>
+      </span>
+    </a>
+  </div>
+</aside>
 
 <main id="top">
 
 <!-- =================== HERO =================== -->
-<section class="hero" data-hero-layout>
+<section class="hero hero-full">
   <div class="hero-media">
     <img src="candidates/ヒーロー.jpg" alt="別海町の酪農現場に溜まった農業廃棄物">
     <div class="hero-scrim"></div>
   </div>
+
+  <a class="hero-badge" href="#contact" aria-label="お見積もり無料">
+    <span>お見積り</span>
+    <strong>無料</strong>
+  </a>
 
   <div class="hero-body">
     <div class="hero-eyebrow">
@@ -65,25 +109,7 @@
       分け方がわからなくても大丈夫。<br>
       RiPROのトラックが、毎月あなたの牧場へ。
     </p>
-    <p class="hero-motto">「捨てると公害、生かせば資源。」</p>
-
-    <div class="hero-ctas">
-      <a class="btn-primary btn-lg" href="#contact">
-        <span class="btn-icon">✉</span>
-        無料見積りを依頼する
-      </a>
-      <a class="btn-ghost btn-lg" href="tel:0153795005">
-        <span class="btn-icon">☎</span>
-        <span class="btn-tel-num">0153-79-5005</span>
-      </a>
-    </div>
-
-    <ul class="hero-chips">
-      <li>✓ お見積り無料</li>
-      <li>✓ 段ボール・紙類は0円</li>
-      <li>✓ 中山間 補助金対象</li>
-      <li>✓ マニフェスト発行</li>
-    </ul>
+    <p class="hero-motto">「捨てると公害、活かせば資源。」</p>
   </div>
 
   <!-- Scroll indicator -->
@@ -93,27 +119,23 @@
   </div>
 </section>
 
-<!-- =================== STATS / TRUST BAR =================== -->
-<section class="stats">
-  <div class="wrap stats-grid">
-    <div class="stat">
-      <div class="stat-num">8<span class="stat-unit">品目</span></div>
-      <div class="stat-label">対応廃棄物</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">毎月<span class="stat-unit">定期</span></div>
-      <div class="stat-label">集荷頻度</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">1<span class="stat-unit">t未満</span></div>
-      <div class="stat-label">金属くず 無料回収</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">半額<span class="stat-unit">※</span></div>
-      <div class="stat-label">分別するだけで処分費</div>
-    </div>
+<!-- =================== HERO CTA BAR =================== -->
+<section class="hero-cta-bar">
+  <div class="wrap hero-cta-grid">
+    <a class="hero-cta-tel" href="tel:0153795005">
+      <span class="hero-cta-tel-icon">☎</span>
+      <span class="hero-cta-tel-text">
+        <span class="hero-cta-tel-label">お電話でのお問い合わせ</span>
+        <span class="hero-cta-tel-num">0153-79-5005</span>
+      </span>
+    </a>
+    <a class="hero-cta-form btn-primary btn-lg" href="#contact">
+      <span class="btn-icon">✉</span>
+      無料見積りを依頼する
+    </a>
   </div>
 </section>
+
 
 <!-- =================== PROBLEM =================== -->
 <section class="sec sec-problem" id="problem">
@@ -162,6 +184,13 @@
       <p>そのお悩み、<strong>RiPROの定期集荷</strong>がまるごと解決します。</p>
       <span class="problem-bridge-line"></span>
     </div>
+
+    <div class="sec-mini-cta">
+      <a class="sec-mini-cta-link" href="#contact">
+        <span>無料見積りを依頼する</span>
+        <span class="sec-mini-cta-arrow">→</span>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -209,7 +238,7 @@
 
       <article class="merit reveal">
         <div class="merit-visual">
-          <img src="candidates/現場_再生ペレット_01.jpeg" alt="再生ペレット" loading="lazy">
+          <img src="candidates/いつもきれい.jpg" alt="クレーン付きトラックで牧場から廃プラを集荷" loading="lazy">
         </div>
         <div class="merit-text">
           <div class="merit-num">03</div>
@@ -222,6 +251,13 @@
           </ul>
         </div>
       </article>
+    </div>
+
+    <div class="sec-mini-cta">
+      <a class="sec-mini-cta-link" href="#contact">
+        <span>無料見積りを依頼する</span>
+        <span class="sec-mini-cta-arrow">→</span>
+      </a>
     </div>
   </div>
 </section>
@@ -355,7 +391,7 @@
     <p class="recycle-lead reveal">
       リプロが集めた農業廃棄物は、町外で燃やされて終わりではありません。<br>
       別海町内の<strong>グリーンアース工場</strong>で再生原料（ペレット）に生まれ変わり、海を渡って新しい製品になります。<br>
-      <strong>回収からペレット化までを町内で完結できるのは、リプロとグリーンアースだけ。</strong>
+      <strong>リプロとグリーンアースが連携し、回収から再資源化までを別海町内で完結させています。</strong>
     </p>
 
     <!-- 4-panel recycle flow -->
@@ -391,12 +427,14 @@
           <img src="assets/recycle/03_pelletizing.jpg" alt="グリーンアース工場でのペレット製造" loading="lazy">
           <span class="recycle-panel-num">03</span>
           <span class="recycle-panel-scope recycle-scope-local">別海町内</span>
-          <span class="recycle-panel-hero-badge">町内で完結する<br>唯一の工程</span>
+          <span class="recycle-panel-photo" aria-hidden="true">
+            <img src="candidates/ペレット.jpg" alt="" loading="lazy">
+          </span>
         </div>
         <div class="recycle-panel-body">
           <div class="recycle-panel-eyebrow recycle-panel-eyebrow-hero">CLIMAX</div>
           <h3>町内で、再生ペレットに生まれ変わる</h3>
-          <p>町内の<strong>グリーンアース工場</strong>で、分別済みの廃プラを破砕・溶融・押出し、黒い再生ペレットに。<strong>回収〜再原料化を町内で一貫できるのは、別海町でリプロだけ。</strong></p>
+          <p>町内の<strong>グリーンアース工場</strong>で、分別済みの廃プラを破砕・溶融・押出し、黒い再生ペレットに。<strong>リプロとグリーンアースが連携して、回収から再原料化までを別海町内で完結させています。</strong></p>
         </div>
       </article>
 
@@ -423,6 +461,13 @@
         ※ グリーンアース工場は別海町内にあり、リプロ代表の八木が取締役を務めています。回収から再原料化までを連携して運営しています。
       </p>
     </div>
+
+    <div class="sec-mini-cta">
+      <a class="sec-mini-cta-link" href="#contact">
+        <span>無料見積りを依頼する</span>
+        <span class="sec-mini-cta-arrow">→</span>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -432,7 +477,48 @@
     <div class="sec-head">
       <p class="sec-eyebrow">CLEANUP</p>
       <h2 class="sec-title">クリーンアップサービス</h2>
-      <p class="sec-desc">何年も溜まってしまった廃棄物、<br class="sp-only">まとめて一気に片付けます。</p>
+      <p class="cleanup-tagline">「いっちょ、ここらで<br class="sp-only">綺麗にしとこうかな。」</p>
+      <p class="sec-desc">
+        月1回の定期回収とは別の、<strong>一度きりでも頼める一括回収サービス</strong>です。<br>
+        何年も溜まったままの廃プラ・古タイヤ・農機具などを、<br class="sp-only">RiPROがまるごと片付けます。
+      </p>
+    </div>
+
+    <!-- こんな状況、放置してませんか？ -->
+    <div class="cleanup-problems-photo reveal">
+      <h3 class="cleanup-problems-title">こんな状況、<br class="sp-only">放置してませんか？</h3>
+      <div class="cleanup-problems-photo-grid">
+        <article class="cup-photo-card">
+          <img src="candidates/廃プラ堆積_01.jpeg" alt="" loading="lazy">
+          <div class="cup-photo-scrim"></div>
+          <p class="cup-photo-text">敷地の隅に何年も<br>廃プラが山積み</p>
+        </article>
+        <article class="cup-photo-card">
+          <img src="candidates/ハイタイヤ.jpg" alt="" loading="lazy">
+          <div class="cup-photo-scrim"></div>
+          <p class="cup-photo-text">古タイヤがあちこちに<br>転がっている</p>
+        </article>
+        <article class="cup-photo-card">
+          <img src="candidates/廃農機具.jpg" alt="" loading="lazy">
+          <div class="cup-photo-scrim"></div>
+          <p class="cup-photo-text">使わなくなった農機具が<br>雨ざらしのまま</p>
+        </article>
+        <article class="cup-photo-card">
+          <img src="candidates/現場_牧場廃プラ_01.jpeg" alt="" loading="lazy">
+          <div class="cup-photo-scrim"></div>
+          <p class="cup-photo-text">来客や視察のたびに<br>気になっている</p>
+        </article>
+        <article class="cup-photo-card">
+          <img src="candidates/廃自動車.jpg" alt="" loading="lazy">
+          <div class="cup-photo-scrim"></div>
+          <p class="cup-photo-text">一人で片付けるには<br>重すぎる・量が多すぎる</p>
+        </article>
+        <article class="cup-photo-card">
+          <img src="candidates/家電.jpg" alt="" loading="lazy">
+          <div class="cup-photo-scrim"></div>
+          <p class="cup-photo-text">どこに頼めばいいか<br>わからない</p>
+        </article>
+      </div>
     </div>
 
     <div class="ba-gallery">
@@ -449,10 +535,46 @@
         </div>
         <div class="ba-body">
           <h3>A牧場さま｜廃プラ・古タイヤ 約8年分</h3>
-          <p>牛舎裏に溜め続けた廃プラと古タイヤをまとめて搬出。クリーンアップ後は月1回の定期集荷で、きれいな状態をキープ中です。</p>
+          <p>牛舎裏に溜め続けた廃プラと古タイヤをまとめて搬出。<strong>2名・約1日で完了</strong>しました。クリーンアップ後は月1回の定期集荷で、きれいな状態をキープ中です。</p>
         </div>
       </div>
 
+    </div>
+
+    <!-- 依頼の流れ -->
+    <div class="cleanup-flow reveal">
+      <h3 class="cleanup-flow-title">ご依頼の流れ</h3>
+      <p class="cleanup-flow-lead">電話1本から、最短1〜2週間で<br class="sp-only">クリーンアップ完了。</p>
+      <ol class="cleanup-flow-steps">
+        <li>
+          <div class="cuf-num">01</div>
+          <div class="cuf-body">
+            <h4>電話 or フォームで相談</h4>
+            <p>「廃プラがこれくらい溜まってる」と一言伝えるだけでOK。匿名相談も歓迎します。</p>
+          </div>
+        </li>
+        <li>
+          <div class="cuf-num">02</div>
+          <div class="cuf-body">
+            <h4>現地お見積り（無料）</h4>
+            <p>スタッフが牧場へ伺い、量・必要な機材・所要時間・概算費用をその場でご案内します。</p>
+          </div>
+        </li>
+        <li>
+          <div class="cuf-num">03</div>
+          <div class="cuf-body">
+            <h4>作業日を決定</h4>
+            <p>ご都合のよい日に作業を実施。通常1〜2週間以内で調整可能です。</p>
+          </div>
+        </li>
+        <li>
+          <div class="cuf-num">04</div>
+          <div class="cuf-body">
+            <h4>クリーンアップ実施</h4>
+            <p>多くは1日で完了。そのまま<strong>月1回の定期集荷へ移行</strong>すれば、もう二度と溜まりません。</p>
+          </div>
+        </li>
+      </ol>
     </div>
 
     <div class="cleanup-price reveal">
@@ -516,6 +638,13 @@
           </div>
         </figcaption>
       </figure>
+    </div>
+
+    <div class="sec-mini-cta">
+      <a class="sec-mini-cta-link" href="#contact">
+        <span>無料見積りを依頼する</span>
+        <span class="sec-mini-cta-arrow">→</span>
+      </a>
     </div>
   </div>
 </section>
@@ -659,12 +788,12 @@
     <div class="about">
       <div class="about-msg">
         <div class="about-portrait">
-          <img src="candidates/廃プラ堆積_01.jpeg" alt="代表 八木一洋（仮）" loading="lazy">
+          <img src="candidates/八木社長.png" alt="株式会社RiPRO 代表取締役 八木一洋" loading="lazy">
         </div>
         <div class="about-msg-body">
           <p class="about-eyebrow">代表挨拶</p>
           <h3>「農家さんの敷地を、<br>きれいに。」</h3>
-          <p>株式会社RiPRO代表の八木一洋です。別海町で農業廃棄物の回収を行っています。捨てるだけでなく、生かす。地域で出たものを地域で循環させることを大切にしています。お困りのことがあれば、まずは一声おかけください。</p>
+          <p>株式会社RiPRO代表の八木一洋です。別海町で農業廃棄物の回収を行っています。捨てるだけでなく、活かす。地域で出たものを地域で循環させることを大切にしています。お困りのことがあれば、まずは一声おかけください。</p>
           <p class="about-sign">代表取締役　八木 一洋</p>
         </div>
       </div>
@@ -739,7 +868,7 @@
   <div class="wrap footer-grid">
     <div class="footer-brand">
       <img src="assets/logo.png" alt="RiPRO" class="footer-logo">
-      <p>捨てると公害、<br>生かせば資源。</p>
+      <p>捨てると公害、<br>活かせば資源。</p>
     </div>
     <div class="footer-col">
       <h5>サービス</h5>
@@ -784,7 +913,8 @@
 </div>
 
 
-<script src="js/items-data.js"></script>
-<script src="js/app.js"></script>
+<script src="js/items-data.js?v=13"></script>
+<script src="js/categories-data.js?v=13"></script>
+<script src="js/app.js?v=13"></script>
 </body>
 </html>
