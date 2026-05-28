@@ -74,18 +74,22 @@ window.RIPRO_ITEMS = [
     "category": "塩ビ類",
     "price": "132円/kg",
     "free": false,
+    "commonNote": "塩ビ類は他の品目と混ぜず、単体で袋詰めしてください。塩ビシートと作業用前掛けは一緒の袋に入れていただいてOKです。",
     "subitems": [
       {
         "image": "candidates/塩ビパイプ.jpg",
         "label": "塩ビパイプ（硬質）",
-        "desc": "",
-        "note": "塩ビパイプは単体で袋詰めしてください。他のものとの混入はできません。"
+        "desc": ""
       },
       {
         "image": "candidates/塩ビシート.jpg",
-        "label": "塩ビシート・作業用前掛け",
-        "desc": "塩ビシートと作業用前掛けは一緒の袋に入れていただいてOKです。",
-        "note": "塩ビパイプ（硬質）とは分けてください。"
+        "label": "塩ビシート",
+        "desc": ""
+      },
+      {
+        "image": "candidates/作業用前掛け.jpg",
+        "label": "作業用前掛け",
+        "desc": ""
       }
     ]
   },
@@ -125,7 +129,7 @@ window.RIPRO_ITEMS = [
       {
         "image": "candidates/子牛用ハッチ.jpg",
         "label": "子牛用ハッチ",
-        "desc": "そのままの状態でお出しいただけます。"
+        "desc": ""
       }
     ]
   },
@@ -138,7 +142,7 @@ window.RIPRO_ITEMS = [
     "commonNote": "それぞれ単体で袋詰めしてください。大きいものは割って袋詰めしてください。",
     "subitems": [
       {
-        "image": "candidates/発泡スチロール.jpg",
+        "image": "images/発泡スチロール.jpg",
         "label": "発泡スチロール",
         "desc": ""
       },
