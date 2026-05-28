@@ -61,6 +61,8 @@
       free: !!it.free,
       desc: firstSub.desc || '',
       note: firstSub.note || '',
+      commonDesc: it.commonDesc || '',
+      commonNote: it.commonNote || '',
       phLabel: it.name,
       image: firstSub.image || null,
       subitems: it.subitems || []
@@ -174,11 +176,21 @@
         '</div>' +
       '</div>';
     }).join('') : '';
+    const commonDescHtml = (it.commonDesc || '').trim()
+      ? '<p class="cat-modal-item-desc">' + escapeHtml(it.commonDesc) + '</p>'
+      : '';
+    const commonNoteHtml = (it.commonNote || '').trim()
+      ? '<div class="cat-modal-item-note">' + escapeHtml(it.commonNote) + '</div>'
+      : '';
+    const commonBlock = (commonDescHtml || commonNoteHtml)
+      ? '<div class="cat-modal-item-common">' + commonDescHtml + commonNoteHtml + '</div>'
+      : '';
     return '<section class="cat-modal-item">' +
       '<header class="cat-modal-item-head">' +
         '<h4>' + escapeHtml(it.name) + '</h4>' +
         '<span class="cat-modal-item-price">' + escapeHtml(it.priceLabel) + '</span>' +
       '</header>' +
+      commonBlock +
       (subsHtml ? '<div class="cat-modal-subs">' + subsHtml + '</div>' : '') +
     '</section>';
   }

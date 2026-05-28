@@ -15,8 +15,9 @@ window.RIPRO_ITEMS = [
       },
       {
         "image": "candidates/ブルーシート4.jpg",
-        "label": "ブルーシート",
-        "desc": "使用済みのブルーシート・防水シート。サイズが大きい場合は2×10m程度に切断してお出しいただけると回収がスムーズです。"
+        "label": "ブルーシート（スタックシート）",
+        "desc": "使用済みのブルーシート・防水シート。サイズが大きい場合は2×10m程度に切断してお出しいただけると回収がスムーズです。",
+        "note": "大きいまま出すと土や草が混ざり重量が増えるので、切断し付着物を落とすことをおすすめします。"
       },
       {
         "image": "candidates/フレコンバック.jpg",
@@ -37,6 +38,7 @@ window.RIPRO_ITEMS = [
     "category": "硬プラ類",
     "price": "99円/kg",
     "free": false,
+    "commonNote": "タンク類は洗浄し、残液が残らない様にしてください。",
     "subitems": [
       {
         "image": "candidates/バケツ、ポリ容器.jpg",
@@ -46,6 +48,11 @@ window.RIPRO_ITEMS = [
       {
         "image": "candidates/硬プラ_01.jpeg",
         "label": "デッピングタンク",
+        "desc": ""
+      },
+      {
+        "image": "images/蟻酸タンク青.jpg",
+        "label": "蟻酸タンク（青のタンク）",
         "desc": ""
       },
       {
@@ -69,22 +76,16 @@ window.RIPRO_ITEMS = [
     "free": false,
     "subitems": [
       {
-        "image": "candidates/作業用前掛け.jpg",
-        "label": "作業用前掛け",
-        "desc": "",
-        "note": "塩ビ系（塩ビ管、塩ビシート等）は単体で袋詰めしてください。他のものとの混入はできません。"
-      },
-      {
         "image": "candidates/塩ビパイプ.jpg",
-        "label": "塩ビパイプ",
+        "label": "塩ビパイプ（硬質）",
         "desc": "",
-        "note": "塩ビ系（塩ビ管、塩ビシート等)は単体で袋詰めしてください。他のものとの混入はできません。"
+        "note": "塩ビパイプは単体で袋詰めしてください。他のものとの混入はできません。"
       },
       {
         "image": "candidates/塩ビシート.jpg",
-        "label": "塩ビシート",
-        "desc": "",
-        "note": "塩ビ系（塩ビ管、塩ビシート等)は単体で袋詰めしてください。他のものとの混入はできません。"
+        "label": "塩ビシート・作業用前掛け",
+        "desc": "塩ビシートと作業用前掛けは一緒の袋に入れていただいてOKです。",
+        "note": "塩ビパイプ（硬質）とは分けてください。"
       }
     ]
   },
@@ -104,8 +105,7 @@ window.RIPRO_ITEMS = [
       {
         "image": "candidates/たけ箒.jpg",
         "label": "竹ほうき",
-        "desc": "",
-        "note": "防腐剤、コールタール付き木材は混合廃棄物になります。他の木くずとは別に仕分けしてください。"
+        "desc": ""
       }
     ]
   },
@@ -125,8 +125,7 @@ window.RIPRO_ITEMS = [
       {
         "image": "candidates/子牛用ハッチ.jpg",
         "label": "子牛用ハッチ",
-        "desc": "",
-        "note": "FRP系の廃棄物は単体で袋詰めをお願いします。他素材のものとの混入はできません。"
+        "desc": "そのままの状態でお出しいただけます。"
       }
     ]
   },
@@ -136,18 +135,17 @@ window.RIPRO_ITEMS = [
     "category": "発泡スチロール・スタイロフォーム",
     "price": "330円/kg",
     "free": false,
+    "commonNote": "それぞれ単体で袋詰めしてください。大きいものは割って袋詰めしてください。",
     "subitems": [
       {
         "image": "candidates/発泡スチロール.jpg",
         "label": "発泡スチロール",
-        "desc": "",
-        "note": "それぞれ単体で袋詰めしてください。"
+        "desc": ""
       },
       {
         "image": "candidates/スタイロフォーム.jpg",
         "label": "スタイロフォーム",
-        "desc": "",
-        "note": "それぞれ単体で袋詰めしてください。"
+        "desc": ""
       }
     ]
   },
@@ -157,36 +155,33 @@ window.RIPRO_ITEMS = [
     "category": "混合廃棄物",
     "price": "132円/kg",
     "free": false,
+    "commonNote": "品目問わず複数混入しているものは混合廃棄物となります。塩ビ類・スタイロフォームは混合廃棄物にも混入できません。",
     "subitems": [
       {
         "image": "candidates/皮バンド.jpg",
         "label": "革バンド",
-        "desc": "",
-        "note": "品目問わず複数混入しているものは混合廃棄物となります。塩ビ類、スタイロフォームは混合廃棄物にも混入できません。"
+        "desc": ""
       },
       {
         "image": "candidates/ブラシ.jpg",
         "label": "ブラシ",
-        "desc": "",
-        "note": "品目問わず複数混入しているものは混合廃棄物となります。塩ビ類、スタイロフォームは混合廃棄物にも混入できません。"
+        "desc": ""
       },
       {
         "image": "candidates/麻ロープ.jpg",
         "label": "麻ロープ",
         "desc": "",
-        "note": "ビニール系のロープは軟プラとなります"
+        "note": "ビニール系のロープは軟プラとなります。"
       },
       {
         "image": "candidates/電牧ロープ.jpg",
         "label": "電牧ロープ",
-        "desc": "",
-        "note": "品目問わず複数混入しているものは混合廃棄物となります。塩ビ類、スタイロフォームは混合廃棄物にも混入できません。"
+        "desc": ""
       },
       {
         "image": "candidates/乳紙フィルター.jpg",
         "label": "乳紙フィルター",
-        "desc": "",
-        "note": "品目問わず複数混入しているものは混合廃棄物となります。塩ビ類、スタイロフォームは混合廃棄物にも混入できません。"
+        "desc": ""
       },
       {
         "image": "candidates/使用済み牛床マット.jpg",
@@ -202,6 +197,7 @@ window.RIPRO_ITEMS = [
     "category": "ゴム",
     "price": "99円/kg",
     "free": false,
+    "commonNote": "ホース類は、金具がついているものは混合廃棄物となります。ゴム素材単体で袋詰めしてください。",
     "subitems": [
       {
         "image": "candidates/ライナーゴム.jpg",
@@ -219,21 +215,19 @@ window.RIPRO_ITEMS = [
         "desc": ""
       },
       {
-        "image": "candidates/ニトリル手袋_01.jpeg",
+        "image": "candidates/ニトリル手袋.jpg",
         "label": "ニトリル手袋",
         "desc": ""
       },
       {
         "image": "candidates/シリコンホース.jpg",
         "label": "シリコンホース",
-        "desc": "",
-        "note": "ホースに金具がついているものは混合廃棄物となります。ゴム素材単体で袋詰めしてください。"
+        "desc": ""
       },
       {
         "image": "candidates/ゴムホース.jpg",
         "label": "ゴムホース",
-        "desc": "",
-        "note": "ホースに金具がついているものは混合廃棄物となります。ゴム素材単体で袋詰めしてください。"
+        "desc": ""
       }
     ]
   },
@@ -282,6 +276,11 @@ window.RIPRO_ITEMS = [
         "image": "assets/placeholder.svg",
         "label": "資料袋（紙質）",
         "desc": ""
+      },
+      {
+        "image": "assets/placeholder.svg",
+        "label": "肥料袋（紙質）",
+        "desc": ""
       }
     ]
   },
@@ -308,26 +307,24 @@ window.RIPRO_ITEMS = [
     "id": "item-appliance",
     "name": "家電製品",
     "category": "家電製品",
-    "price": "別途お見積り",
+    "price": "1台 3,300円〜（2台目以降 1,100円）",
     "free": false,
+    "commonDesc": "リサイクル券はリプロでご用意します。家電リサイクル券センターのリサイクル料金に基づく金額に、振込手数料・機関事務料を加えた料金です。",
     "subitems": [
       {
         "image": "assets/placeholder.svg",
         "label": "洗濯機",
-        "desc": "",
-        "note": "リサイクル券必要"
+        "desc": ""
       },
       {
         "image": "assets/placeholder.svg",
         "label": "冷蔵庫",
-        "desc": "",
-        "note": "リサイクル券必要"
+        "desc": ""
       },
       {
         "image": "assets/placeholder.svg",
         "label": "テレビ",
-        "desc": "",
-        "note": "リサイクル券必要"
+        "desc": ""
       }
     ]
   },
