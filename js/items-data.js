@@ -52,7 +52,7 @@ window.RIPRO_ITEMS = [
       },
       {
         "image": "images/蟻酸タンク青.jpg",
-        "label": "蟻酸タンク（青のタンク）",
+        "label": "蟻酸タンク",
         "desc": ""
       },
       {
@@ -117,7 +117,7 @@ window.RIPRO_ITEMS = [
     "id": "item-wood",
     "name": "FRP製一輪車・子牛用ハッチ",
     "category": "FRP類",
-    "price": "132円/kg",
+    "price": "180円/kg",
     "free": false,
     "subitems": [
       {
@@ -278,7 +278,7 @@ window.RIPRO_ITEMS = [
       },
       {
         "image": "assets/placeholder.svg",
-        "label": "資料袋（紙質）",
+        "label": "飼料袋（紙質）",
         "desc": ""
       },
       {
@@ -311,9 +311,9 @@ window.RIPRO_ITEMS = [
     "id": "item-appliance",
     "name": "家電製品",
     "category": "家電製品",
-    "price": "1台 3,300円〜（2台目以降 1,100円）",
+    "price": "リサイクル料金＋収集運搬料",
     "free": false,
-    "commonDesc": "リサイクル券はリプロでご用意します。家電リサイクル券センターのリサイクル料金に基づく金額に、振込手数料・機関事務料を加えた料金です。",
+    "commonDesc": "リサイクル券はリプロでご用意します。家電リサイクル券センターのリサイクル料金に基づく金額に、振込手数料・収集運搬料を加えた料金です。詳しくはお問い合わせください。",
     "subitems": [
       {
         "image": "assets/placeholder.svg",
