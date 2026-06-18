@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /picker/
+Disallow: /mock-d.html
+
+Sitemap: https://ripro.biz/sitemap.xml
