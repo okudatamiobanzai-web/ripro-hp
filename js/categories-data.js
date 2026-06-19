@@ -32,7 +32,7 @@ window.RIPRO_CATEGORIES = [
     id: 'cat-foam',
     name: '発泡・FRP',
     summary: '発泡スチロール・スタイロフォーム・FRP製一輪車・子牛用ハッチ',
-    priceRange: '¥180〜330 / kg',
+    priceRange: '¥198〜330 / kg',
     image: 'candidates/スタイロフォーム.jpg',
     itemIds: ['item-vinyl', 'item-wood'],
   },
